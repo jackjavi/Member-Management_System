@@ -2,9 +2,13 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.mjs",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.mjs",
+    "seed": "node seeders/seedUsers.mjs",
+    "dev": "nodemon index.mjs"
   },
   "repository": {
     "type": "git",
@@ -20,5 +24,17 @@
   "bugs": {
     "url": "https://github.com/jackjavi/Member-Management_System/issues"
   },
-  "homepage": "https://github.com/jackjavi/Member-Management_System#readme"
+  "homepage": "https://github.com/jackjavi/Member-Management_System#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
 }
