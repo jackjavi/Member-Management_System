@@ -39,12 +39,20 @@ function Navbar() {
                 <NavLink to={"/create"}>Create post</NavLink>
               </li>
               <li>
-                <p>
-                  Welcome back{" "}
-                  <Link to={`/profile/${user.id}`}>
-                    <span className="underline">{user.name}</span>
-                  </Link>
-                </p>
+                <div className="flex gap-4">
+                  <p className="flex ">
+                    <Link to={`/profile/${user.id}`}>
+                      <span className="underline">{user.name}</span>
+                    </Link>
+                  </p>
+                  <p className="">
+                    <img
+                      src={`${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`}
+                      alt={user.name}
+                      className="w-10 h-10 rounded-full"
+                    />
+                  </p>
+                </div>
               </li>
               <li className="hover:text-[#5e17eb] transition-all ease-in-out duration-200 font-semibold md:text-md lg:text-lg">
                 <button onClick={disconnect}>Logout</button>
@@ -99,6 +107,13 @@ function Navbar() {
                           <span className="underline"></span>
                           {user.name}
                         </Link>
+                      </p>
+                      <p className="">
+                        <img
+                          src={`${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`}
+                          alt={user.name}
+                          className="w-10 h-10 rounded-full"
+                        />
                       </p>
                     </li>
                     <li>

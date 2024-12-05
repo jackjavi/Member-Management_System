@@ -73,6 +73,7 @@ async function verifyToken(req, res, next) {
 
     res.status(200).json({
       user: {
+        id: user.id,
         name: user.name,
         email: user.email,
         role: user.role?.name,
