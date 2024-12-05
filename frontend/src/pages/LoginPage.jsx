@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContextWrapper";
 import axios from "axios";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -9,8 +10,10 @@ function LoginPage() {
     password: "",
   });
 
+  const { storeToken, authenticateUser } = useContext(AuthContext);
+
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   function handleChange(event) {
     const value = event.currentTarget.value;
@@ -27,10 +30,8 @@ function LoginPage() {
       );
       console.log(response);
       if (response.status === 200) {
-        localStorage.setItem("token", response.data.token);
-        setTimeout(() => {
-          navigate("/");
-        }, 200);
+        storeToken(response.data.token);
+        await authenticateUser();
       }
     } catch (error) {
       console.log(error);

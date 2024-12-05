@@ -57,4 +57,13 @@ async function login(req, res) {
   }
 }
 
-export { register, login };
+async function verifyToken(req, res, next) {
+  try {
+    const user = await User.findByPk(req.userId);
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(401).json({ error: "Unauthorized" });
+  }
+}
+
+export { register, login, verifyToken };
