@@ -1,6 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../../utils/database.mjs";
 import Role from "./role.mjs";
+import Member from "./member.mjs";
 
 class User extends Model {}
 
@@ -13,7 +14,5 @@ User.init(
   },
   { sequelize, modelName: "User", timestamps: true }
 );
-
-User.belongsTo(Role, { foreignKey: "roleId" });
 
 export default User;

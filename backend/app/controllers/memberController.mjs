@@ -1,12 +1,10 @@
-import Member from "../models/member.mjs";
-import User from "../models/user.mjs";
+import { Member, User } from "../models/index.mjs";
 
 async function createMember(req, res) {
   try {
     const { dateOfBirth } = req.body;
 
     const userId = req.userId;
-    console.log("userid", userId);
 
     if (!userId) {
       return res.status(400).json({ error: "User ID is required" });

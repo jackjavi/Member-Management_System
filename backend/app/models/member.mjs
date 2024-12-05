@@ -13,6 +13,4 @@ Member.init(
   { sequelize, modelName: "Member", timestamps: true }
 );
 
-Member.belongsTo(User, { foreignKey: "userId", as: "user" });
-
 export default Member;
