@@ -4,6 +4,7 @@ import IsLoggedIn from "./components/Routing/isLoggedIn";
 import IsLoggedOut from "./components/Routing/isLoggedOut";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import MemberUpload from "./pages/MemberUpload";
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
             <Route path="/signup" element={<IsLoggedOut />}>
               <Route index element={<SignupPage />} />
             </Route>
-            <Route path="/" element={<IsLoggedIn />} />
+            <Route path="/" element={<IsLoggedIn />}>
+              <Route index element={<MemberUpload />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </AuthContextWrapper>

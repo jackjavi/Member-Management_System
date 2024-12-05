@@ -1,8 +1,7 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
 import axios from "axios";
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -13,7 +12,7 @@ function LoginPage() {
   const { storeToken, authenticateUser } = useContext(AuthContext);
 
   const [errorMessage, setErrorMessage] = useState("");
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   function handleChange(event) {
     const value = event.currentTarget.value;
@@ -32,6 +31,7 @@ function LoginPage() {
       if (response.status === 200) {
         storeToken(response.data.token);
         await authenticateUser();
+        navigate("/upload");
       }
     } catch (error) {
       console.log(error);

@@ -51,6 +51,8 @@ async function login(req, res) {
       expiresIn: "1h",
     });
 
+    req.userId = user.id;
+
     res.status(200).json({ token });
   } catch (error) {
     res.status(500).json({ error: error.message });
