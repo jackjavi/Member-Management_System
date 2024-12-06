@@ -20,7 +20,7 @@ appRoutes(app);
 
 // Sync Database and Start Server
 sequelize
-  .sync({})
+  .sync({ force: true })
   .then(async () => {
     const roles = [{ name: "user" }, { name: "admin" }];
 
@@ -42,6 +42,7 @@ sequelize
         defaults: activity,
       });
     }
+
     console.log("Database synced successfully.");
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);

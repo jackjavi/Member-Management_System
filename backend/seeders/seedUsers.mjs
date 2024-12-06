@@ -1,64 +1,75 @@
 import bcrypt from "bcrypt";
 import { Role, User, ActivityLog } from "../app/models/index.mjs";
+import logUserActivity from "../utils/logUserActivity.mjs";
 
 async function seedUsers() {
   try {
+    // Fetch roles and ensure the "register" activity exists
     const seededRoles = await Role.findAll();
+    const registerActivity = await ActivityLog.findOne({
+      where: { action: "register" },
+    });
+
+    if (!registerActivity) {
+      throw new Error('Activity "register" not found in ActivityLog table.');
+    }
 
     const userRole = seededRoles.find((role) => role.name === "user");
     const adminRole = seededRoles.find((role) => role.name === "admin");
 
-    const hashedPassword1 = await bcrypt.hash("password123", 10);
-    const hashedPassword2 = await bcrypt.hash("adminpassword", 10);
-    const hashedPassword3 = await bcrypt.hash("userpassword", 10);
-    const hashedPassword4 = await bcrypt.hash("testpassword", 10);
-    const hashedPassword5 = await bcrypt.hash("anotherpassword", 10);
+    const hashedPasswords = await Promise.all([
+      bcrypt.hash("password123", 10),
+      bcrypt.hash("adminpassword", 10),
+      bcrypt.hash("userpassword", 10),
+      bcrypt.hash("testpassword", 10),
+      bcrypt.hash("anotherpassword", 10),
+    ]);
 
+    // Define users to be created
     const users = [
       {
         name: "John Doe",
         email: "johndoe@example.com",
-        password: hashedPassword1,
+        password: hashedPasswords[0],
         roleId: userRole.id,
       },
       {
         name: "Admin User",
         email: "admin@example.com",
-        password: hashedPassword2,
+        password: hashedPasswords[1],
         roleId: adminRole.id,
       },
       {
         name: "Regular User",
         email: "regularUser@gmail.com",
-        password: hashedPassword3,
+        password: hashedPasswords[2],
         roleId: userRole.id,
       },
       {
         name: "Test User",
         email: "testUser@gmail.com",
-        password: hashedPassword4,
+        password: hashedPasswords[3],
         roleId: userRole.id,
       },
       {
         name: "Another User",
         email: "anotherUser@gmail.com",
-        password: hashedPassword5,
+        password: hashedPasswords[4],
         roleId: userRole.id,
       },
     ];
 
-    await User.bulkCreate(users);
+    // Bulk create users and fetch them
+    const createdUsers = await User.bulkCreate(users, { returning: true });
 
-    console.log("Roles and user seed data inserted successfully!");
-
-    const users_act = await User.findAll();
-    const activities_use = await ActivityLog.findAll();
-
-    for (const user of users_act) {
-      await user.addActivities(activities_use);
+    // Log the registration activity for each user
+    for (const user of createdUsers) {
+      await logUserActivity(user.id, "register");
     }
 
-    console.log("UserActivity table populated successfully!");
+    console.log(
+      "Roles, users, and UserActivity seed data inserted successfully!"
+    );
   } catch (error) {
     console.error("Error seeding users:", error.message);
   }

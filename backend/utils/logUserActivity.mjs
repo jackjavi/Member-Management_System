@@ -3,6 +3,7 @@ import { ActivityLog, UserActivity } from "../app/models/index.mjs";
 async function logUserActivity(userId, action) {
   try {
     const activity = await ActivityLog.findOne({ where: { action } });
+
     if (!activity) {
       throw new Error(`Activity "${action}" not found`);
     }
