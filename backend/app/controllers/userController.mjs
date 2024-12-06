@@ -1,4 +1,5 @@
-import { Member, User, Role } from "../models/index.mjs";
+import { Member, User, Role, UserActivity } from "../models/index.mjs";
+import logUserActivity from "../../utils/logUserActivity.mjs";
 import config from "../../config/config.mjs";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -28,6 +29,7 @@ async function register(req, res) {
       roleId: role.id,
     });
 
+    await logUserActivity(user.id, "register");
     res.status(201).json({ user });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -70,6 +72,8 @@ async function verifyToken(req, res, next) {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+
+    await logUserActivity(user.id, "login");
 
     res.status(200).json({
       user: {

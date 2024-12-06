@@ -1,6 +1,5 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../../utils/database.mjs";
-import User from "./user.mjs";
 
 class Member extends Model {}
 

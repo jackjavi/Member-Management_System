@@ -1,15 +1,11 @@
 import bcrypt from "bcrypt";
-import User from "../app/models/user.mjs";
-import Role from "../app/models/role.mjs";
+import { Role, User, ActivityLog } from "../app/models/index.mjs";
 
 async function seedUsers() {
   try {
-    const roles = [{ name: "user" }, { name: "admin" }];
-
-    await Role.destroy({ where: {} });
     await User.destroy({ where: {} });
 
-    const seededRoles = await Role.bulkCreate(roles, { returning: true });
+    const seededRoles = await Role.findAll();
 
     const userRole = seededRoles.find((role) => role.name === "user");
     const adminRole = seededRoles.find((role) => role.name === "admin");
@@ -56,6 +52,15 @@ async function seedUsers() {
     await User.bulkCreate(users);
 
     console.log("Roles and user seed data inserted successfully!");
+
+    const users_act = await User.findAll();
+    const activities_use = await ActivityLog.findAll();
+
+    for (const user of users_act) {
+      await user.addActivities(activities_use);
+    }
+
+    console.log("UserActivity table populated successfully!");
   } catch (error) {
     console.error("Error seeding users:", error.message);
   }
