@@ -3,8 +3,6 @@ import { Role, User, ActivityLog } from "../app/models/index.mjs";
 
 async function seedUsers() {
   try {
-    await User.destroy({ where: {} });
-
     const seededRoles = await Role.findAll();
 
     const userRole = seededRoles.find((role) => role.name === "user");

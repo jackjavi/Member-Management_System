@@ -20,7 +20,7 @@ appRoutes(app);
 
 // Sync Database and Start Server
 sequelize
-  .sync({ force: true })
+  .sync({})
   .then(async () => {
     const roles = [{ name: "user" }, { name: "admin" }];
 
