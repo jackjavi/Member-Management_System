@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
 import { Link, NavLink } from "react-router-dom";
 import { MdMenu } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
 
 function Navbar() {
   const { user, isLoggedIn, disconnect } = useContext(AuthContext);
@@ -12,7 +13,7 @@ function Navbar() {
   };
 
   return (
-    <div className="container mx-auto flex justify-between px-4 bg-slate-800 text-[whitesmoke] items-center py-4">
+    <div className=" mx-auto flex justify-between px-4 bg-slate-800 text-[whitesmoke] items-center py-4 fixed w-full top-0 left-0 right-0">
       <Link to={"/"}>
         <h1 className="text-3xl font-extrabold">MMM</h1>
       </Link>
@@ -46,11 +47,15 @@ function Navbar() {
                     </Link>
                   </p>
                   <p className="">
-                    <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`}
-                      alt={user.name}
-                      className="w-10 h-10 rounded-full"
-                    />
+                    {user.profilePicture ? (
+                      <img
+                        src={`${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`}
+                        alt={user.name}
+                        className="w-10 h-10 rounded-full"
+                      />
+                    ) : (
+                      <CgProfile className="w-10 h-10" />
+                    )}
                   </p>
                 </div>
               </li>
