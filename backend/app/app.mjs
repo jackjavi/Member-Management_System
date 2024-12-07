@@ -1,4 +1,5 @@
 import userRoutes from "./routes/userRoutes.mjs";
+import acrivityRoutes from "./routes/activityRoutes.mjs";
 import memberRoutes from "./routes/memberRoutes.mjs";
 import errorMiddleware from "./middlewares/errorMiddleware.mjs";
 import bodyParser from "body-parser";
@@ -15,6 +16,8 @@ const appRoutes = (app) => {
   app.use("/api/v1/users", userRoutes);
   // Member Routes
   app.use("/api/v1/members", memberRoutes);
+  // Activity Routes
+  app.use("/api/v1", acrivityRoutes);
 };
 
 export default appRoutes;

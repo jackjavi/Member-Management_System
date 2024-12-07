@@ -24,7 +24,12 @@ sequelize
   .then(async () => {
     const roles = [{ name: "user" }, { name: "admin" }];
 
-    await Role.bulkCreate(roles, { returning: true });
+    for (const role of roles) {
+      await Role.findOrCreate({
+        where: { name: role.name },
+        defaults: role,
+      });
+    }
 
     const activities = [
       { action: "create", description: "Created a new resource" },
@@ -34,6 +39,14 @@ sequelize
       { action: "login", description: "User logged in" },
       { action: "logout", description: "User logged out" },
       { action: "register", description: "User registered" },
+      {
+        action: "forgot-password",
+        description: "User requested a password reset",
+      },
+      { action: "reset-password", description: "User reset their password" },
+      { action: "change-password", description: "User changed their password" },
+      { action: "change-email", description: "User changed their email" },
+      { action: "create-member", description: "User created Member" },
     ];
 
     for (const activity of activities) {

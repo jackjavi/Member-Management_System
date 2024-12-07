@@ -49,7 +49,11 @@ function Navbar() {
                   <p className="">
                     {user.profilePicture ? (
                       <img
-                        src={`${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`}
+                        src={
+                          user.profilePicture.includes("githubusercontent.com")
+                            ? user.profilePicture
+                            : `${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`
+                        }
                         alt={user.name}
                         className="w-10 h-10 rounded-full"
                       />
@@ -114,11 +118,21 @@ function Navbar() {
                         </Link>
                       </p>
                       <p className="">
-                        <img
-                          src={`${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`}
-                          alt={user.name}
-                          className="w-10 h-10 rounded-full"
-                        />
+                        {user.profilePicture ? (
+                          <img
+                            src={
+                              user.profilePicture.includes(
+                                "githubusercontent.com"
+                              )
+                                ? user.profilePicture
+                                : `${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`
+                            }
+                            alt={user.name}
+                            className="w-10 h-10 rounded-full"
+                          />
+                        ) : (
+                          <CgProfile className="w-10 h-10" />
+                        )}
                       </p>
                     </li>
                     <li>

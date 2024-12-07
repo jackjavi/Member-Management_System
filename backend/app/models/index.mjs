@@ -9,14 +9,18 @@ User.hasOne(Member, { foreignKey: "userId", as: "member" });
 Member.belongsTo(User, { foreignKey: "userId", as: "user" });
 Role.hasMany(User, { foreignKey: "roleId", as: "users" });
 User.belongsToMany(ActivityLog, {
-  through: UserActivity,
+  through: { model: UserActivity, unique: false },
   foreignKey: "userId",
-  as: "activities",
+  unique: false,
 });
 ActivityLog.belongsToMany(User, {
-  through: UserActivity,
-  foreignKey: "activityId",
-  as: "users",
+  through: { model: UserActivity, unique: false },
+  foreignKey: "activityLogId",
+  unique: false,
 });
+UserActivity.belongsTo(User, { foreignKey: "userId" });
+User.hasMany(UserActivity, { foreignKey: "userId" });
+UserActivity.belongsTo(ActivityLog, { foreignKey: "activityLogId" });
+ActivityLog.hasMany(UserActivity, { foreignKey: "activityLogId" });
 
 export { User, Role, Member, ActivityLog, UserActivity };

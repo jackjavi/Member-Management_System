@@ -5,13 +5,10 @@ class UserActivity extends Model {}
 
 UserActivity.init(
   {
-    userId: {
+    id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    activityId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
     },
     timestamp: {
       type: DataTypes.DATE,

@@ -6,7 +6,7 @@ class ActivityLog extends Model {}
 ActivityLog.init(
   {
     action: {
-      type: DataTypes.ENUM("create", "read", "update", "delete"),
+      type: DataTypes.STRING,
       allowNull: false,
     },
     description: {

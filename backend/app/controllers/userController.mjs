@@ -29,6 +29,8 @@ async function register(req, res) {
       roleId: role.id,
     });
 
+    console.log("username", username, "email", email, "password", password);
+
     await logUserActivity(user.id, "register");
     res.status(201).json({ user });
   } catch (error) {

@@ -1,6 +1,32 @@
 import bcrypt from "bcrypt";
-import { Role, User, ActivityLog } from "../app/models/index.mjs";
+import {
+  Role,
+  User,
+  ActivityLog,
+  UserActivity,
+  Member,
+} from "../app/models/index.mjs";
 import logUserActivity from "../utils/logUserActivity.mjs";
+import { faker } from "@faker-js/faker";
+
+const NUM_USERS = 50;
+
+export function createRandomUser(roleId, hashedPassword) {
+  return {
+    name: faker.person.fullName(),
+    email: faker.internet.email(),
+    password: hashedPassword,
+    roleId,
+  };
+}
+
+export function createRandomMember(userId) {
+  return {
+    dateOfBirth: faker.date.birthdate({ min: 18, max: 60, mode: "age" }),
+    profilePicture: faker.image.avatar(),
+    userId,
+  };
+}
 
 async function seedUsers() {
   try {
@@ -17,49 +43,27 @@ async function seedUsers() {
     const userRole = seededRoles.find((role) => role.name === "user");
     const adminRole = seededRoles.find((role) => role.name === "admin");
 
-    const hashedPasswords = await Promise.all([
-      bcrypt.hash("password123", 10),
-      bcrypt.hash("adminpassword", 10),
-      bcrypt.hash("userpassword", 10),
-      bcrypt.hash("testpassword", 10),
-      bcrypt.hash("anotherpassword", 10),
-    ]);
+    if (!userRole || !adminRole) {
+      throw new Error("Required roles (user/admin) are missing.");
+    }
 
-    // Define users to be created
-    const users = [
-      {
-        name: "John Doe",
-        email: "johndoe@example.com",
-        password: hashedPasswords[0],
-        roleId: userRole.id,
-      },
-      {
-        name: "Admin User",
-        email: "admin@example.com",
-        password: hashedPasswords[1],
-        roleId: adminRole.id,
-      },
-      {
-        name: "Regular User",
-        email: "regularUser@gmail.com",
-        password: hashedPasswords[2],
-        roleId: userRole.id,
-      },
-      {
-        name: "Test User",
-        email: "testUser@gmail.com",
-        password: hashedPasswords[3],
-        roleId: userRole.id,
-      },
-      {
-        name: "Another User",
-        email: "anotherUser@gmail.com",
-        password: hashedPasswords[4],
-        roleId: userRole.id,
-      },
-    ];
+    // Generate passwords and their hashes
+    const passwords = Array(NUM_USERS)
+      .fill()
+      .map(() => faker.internet.password());
+    const hashedPasswords = await Promise.all(
+      passwords.map((password) => bcrypt.hash(password, 10))
+    );
+
+    console.log("Passwords", passwords);
+
+    // Generate random users
+    const users = hashedPasswords.map((hashedPassword, index) =>
+      createRandomUser(index === 0 ? adminRole.id : userRole.id, hashedPassword)
+    );
 
     // Bulk create users and fetch them
+    await User.sync({ force: true });
     const createdUsers = await User.bulkCreate(users, { returning: true });
 
     // Log the registration activity for each user
@@ -67,11 +71,30 @@ async function seedUsers() {
       await logUserActivity(user.id, "register");
     }
 
+    // Generate and bulk create members
+    const members = createdUsers.map((user) => createRandomMember(user.id));
+    await Member.bulkCreate(members);
+
+    // Log the member creation activity for each user - action: "create", description: "User created Member"
+    const createMemberActivity = await ActivityLog.findOne({
+      where: { action: "create-member", description: "User created Member" },
+    });
+
+    if (!createMemberActivity) {
+      throw new Error(
+        'Activity "create" with description "User created Member" not found in ActivityLog table.'
+      );
+    }
+
+    for (const user of createdUsers) {
+      await logUserActivity(user.id, "create-member");
+    }
+
     console.log(
-      "Roles, users, and UserActivity seed data inserted successfully!"
+      "Roles, users, members, and UserActivity seed data inserted successfully!"
     );
   } catch (error) {
-    console.error("Error seeding users:", error.message);
+    console.error("Error seeding users and members:", error);
   }
 }
 

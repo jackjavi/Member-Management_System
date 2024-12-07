@@ -1,21 +1,20 @@
-import { ActivityLog, UserActivity } from "../app/models/index.mjs";
+import { User, ActivityLog, UserActivity } from "../app/models/index.mjs";
 
 async function logUserActivity(userId, action) {
   try {
-    const activity = await ActivityLog.findOne({ where: { action } });
-
-    if (!activity) {
-      throw new Error(`Activity "${action}" not found`);
+    const user = await User.findByPk(userId);
+    if (!user) {
+      throw new Error("User not found");
     }
 
-    await UserActivity.create({
-      userId,
-      activityId: activity.id,
-    });
+    const activity = await ActivityLog.findOne({ where: { action } });
+
+    // await user.addActivityLog(activity);
+    await UserActivity.create({ userId, activityLogId: activity.id });
 
     console.log(`Logged activity: ${action} for userId: ${userId}`);
   } catch (error) {
-    console.error("Error logging user activity:", error.message);
+    console.error("Error logging user activity:", error);
   }
 }
 
