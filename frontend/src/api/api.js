@@ -21,3 +21,26 @@ export const fetchSystemWideLogs = async (page) => {
     throw error;
   }
 };
+
+/**
+ * Edits a user's profile.
+ * @returns {Promise<Object>} The user's profile details.
+ */
+export const editProfile = async (data) => {
+  try {
+    const response = await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/api/v1/members/profile-edit`,
+      data,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error editing profile:", error);
+    throw error;
+  }
+};
