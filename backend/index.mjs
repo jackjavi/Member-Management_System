@@ -32,7 +32,7 @@ sequelize
     }
 
     const activities = [
-      { action: "create", description: "Created a new resource" },
+      { action: "create", description: "Created a new user" },
       { action: "read", description: "Viewed a resource" },
       { action: "update", description: "Updated a resource" },
       { action: "delete", description: "Deleted a resource" },

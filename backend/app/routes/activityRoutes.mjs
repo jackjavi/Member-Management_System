@@ -9,6 +9,7 @@ import {
   getUserActivities,
   viewSystemWideLogs,
 } from "../controllers/activityController.mjs";
+import isAuth from "../middlewares/isAuthenticated.mjs";
 
 const router = express.Router();
 
@@ -19,6 +20,6 @@ router.put("/activities/:id", updateActivity);
 router.delete("/activities/:id", deleteActivity);
 router.post("/user-activities", linkActivityToUser);
 router.get("/users/:userId/activities", getUserActivities);
-router.get("/system-logs", viewSystemWideLogs);
+router.get("/system-logs", isAuth, viewSystemWideLogs);
 
 export default router;

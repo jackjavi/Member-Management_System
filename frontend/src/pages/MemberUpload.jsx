@@ -6,10 +6,10 @@ function MemberUpload() {
   const [formData, setFormData] = useState({
     dateOfBirth: "",
   });
-  const [file, setFile] = useState(null); // State to manage file
+  const [file, setFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const { authenticateUser } = useContext(AuthContext);
+  const { authenticateUser, user } = useContext(AuthContext);
 
   function handleInputChange(event) {
     const { id, value } = event.target;
@@ -33,6 +33,7 @@ function MemberUpload() {
       const data = new FormData();
       data.append("dateOfBirth", formData.dateOfBirth);
       data.append("file", file);
+      data.append("userId", user.id);
 
       const response = await axios.post(
         "http://localhost:5000/api/v1/members/create",

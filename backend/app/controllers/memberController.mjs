@@ -1,10 +1,9 @@
 import { Member, User } from "../models/index.mjs";
+import logUserActivity from "../../utils/logUserActivity.mjs";
 
 async function createMember(req, res) {
   try {
-    const { dateOfBirth } = req.body;
-
-    const userId = req.userId;
+    const { dateOfBirth, userId } = req.body;
 
     if (!userId) {
       return res.status(400).json({ error: "User ID is required" });
@@ -24,7 +23,7 @@ async function createMember(req, res) {
       userId,
       dateOfBirth,
       profilePicture: req.file ? req.file.path : null,
-    });
+    }).then(async () => await logUserActivity(user.id, "create-member"));
 
     res.status(201).json({ member });
   } catch (error) {

@@ -4,8 +4,10 @@ import { IoIosArrowForward } from "react-icons/io";
 import { MdPowerSettingsNew } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { FaWindowClose } from "react-icons/fa";
+import { CiFaceSmile } from "react-icons/ci";
+import { CiSettings } from "react-icons/ci";
 
-const Sidebar = ({ mobileMenuOpen, toggleMobileMenu }) => {
+const Sidebar = ({ mobileMenuOpen, toggleMobileMenu, disconnect }) => {
   return (
     <aside
       className={`fixed top-0 left-0 w-[240px] h-full bg-indigo-50 transform ${
@@ -24,7 +26,7 @@ const Sidebar = ({ mobileMenuOpen, toggleMobileMenu }) => {
       </div>
       <div className="bg-white rounded-xl shadow-lg mb-6 p-4">
         <Link
-          href="#"
+          to="/"
           className="flex items-center text-gray-600 hover:text-indigo-800 py-4"
         >
           <HiHome className="mr-2" />
@@ -50,18 +52,22 @@ const Sidebar = ({ mobileMenuOpen, toggleMobileMenu }) => {
       </div>
       <div className="bg-white rounded-xl shadow-lg p-4">
         <Link
-          href="#"
+          to="/profile"
           className="flex items-center text-gray-600 hover:text-indigo-800 py-4"
         >
-          <span className="material-icons-outlined mr-2">face</span>
+          <span className="material-icons-outlined mr-2">
+            <CiFaceSmile />
+          </span>
           Profile
           <IoIosArrowForward className="ml-auto" />
         </Link>
         <Link
-          href="#"
+          to="/profile/edit"
           className="flex items-center text-gray-600 hover:text-indigo-800 py-4"
         >
-          <span className="material-icons-outlined mr-2">settings</span>
+          <span className="material-icons-outlined mr-2">
+            <CiSettings />
+          </span>
           Settings
           <IoIosArrowForward className="ml-auto" />
         </Link>
@@ -69,9 +75,11 @@ const Sidebar = ({ mobileMenuOpen, toggleMobileMenu }) => {
           href="#"
           className="flex items-center text-gray-600 hover:text-indigo-800 py-4"
         >
-          <MdPowerSettingsNew className="mr-2" />
-          Log out
-          <IoIosArrowForward className="ml-auto" />
+          <button onClick={disconnect} className="flex w-full items-center">
+            <MdPowerSettingsNew className="mr-2" />
+            Log out
+            <IoIosArrowForward className="ml-auto" />
+          </button>
         </Link>
       </div>
     </aside>

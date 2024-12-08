@@ -7,7 +7,9 @@ async function logUserActivity(userId, action) {
       throw new Error("User not found");
     }
 
-    const activity = await ActivityLog.findOne({ where: { action } });
+    const activity = await ActivityLog.findOne({
+      where: { action: action },
+    });
 
     // await user.addActivityLog(activity);
     await UserActivity.create({ userId, activityLogId: activity.id });

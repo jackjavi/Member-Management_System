@@ -9,6 +9,7 @@ import MemberUpload from "./pages/MemberUpload";
 import Header from "./components/Header";
 import Dashboard from "./components/Dashboard";
 import SystemLogsTable from "./components/SystemLogsTable";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -24,14 +25,18 @@ function App() {
               <Route path="/signup" element={<IsLoggedOut />}>
                 <Route index element={<SignupPage />} />
               </Route>
-              <Route path="/upload" element={<IsLoggedIn />}>
+              <Route path="/profile/edit" element={<IsLoggedIn />}>
                 <Route index element={<MemberUpload />} />
               </Route>
               <Route path="/" element={<IsLoggedIn />}>
                 <Route index element={<Dashboard />} />
               </Route>
-              <Route path="/profile/:id" element={<Dashboard />} />
-              <Route path="/logs" element={<SystemLogsTable />} />
+              <Route path="/profile" element={<IsLoggedIn />}>
+                <Route index element={<Profile />} />
+              </Route>
+              <Route path="/logs" element={<IsLoggedIn />}>
+                <Route index element={<SystemLogsTable />} />
+              </Route>
 
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>

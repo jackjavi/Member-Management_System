@@ -77,7 +77,7 @@ async function seedUsers() {
 
     // Log the member creation activity for each user - action: "create", description: "User created Member"
     const createMemberActivity = await ActivityLog.findOne({
-      where: { action: "create-member", description: "User created Member" },
+      where: { action: "create-member" },
     });
 
     if (!createMemberActivity) {

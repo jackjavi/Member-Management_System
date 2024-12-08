@@ -7,7 +7,13 @@ import axios from "axios";
 export const fetchSystemWideLogs = async (page) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/api/v1/system-logs?page=${page}&limit=5`
+      `${process.env.REACT_APP_BACKEND_URL}/api/v1/system-logs?page=${page}&limit=5`,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      }
     );
     return response.data;
   } catch (error) {

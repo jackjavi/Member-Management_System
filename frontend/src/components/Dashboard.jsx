@@ -1,13 +1,17 @@
 import React, { useContext } from "react";
 import { LogsContext } from "../context/LogsContextWrapper";
+import { AuthContext } from "../context/AuthContextWrapper";
 import { HiHome } from "react-icons/hi2";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdPowerSettingsNew } from "react-icons/md";
+import { CiFaceSmile } from "react-icons/ci";
+import { CiSettings } from "react-icons/ci";
 import { TbLogs } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const { totalLogs } = useContext(LogsContext);
+  const { disconnect } = useContext(AuthContext);
   return (
     <div className="bg-indigo-50 min-h-screen overflow-x-hidden  pt-16">
       <div className="pt-16 max-w-7xl mx-auto flex">
@@ -53,20 +57,24 @@ const Dashboard = () => {
 
           <div className="bg-white rounded-xl shadow-lg p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             <Link
-              href="#"
+              to="/profile"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
-              <span className="material-icons-outlined mr-2">face</span>
+              <span className="material-icons-outlined mr-2">
+                <CiFaceSmile />
+              </span>
               Profile
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
             </Link>
             <Link
-              href="#"
+              to="/profile/edit"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
-              <span className="material-icons-outlined mr-2">settings</span>
+              <span className="material-icons-outlined mr-2">
+                <CiSettings />
+              </span>
               Settings
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
@@ -76,13 +84,15 @@ const Dashboard = () => {
               href="#"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
-              <span className="material-icons-outlined mr-2">
-                <MdPowerSettingsNew />
-              </span>
-              Log out
-              <span className="material-icons-outlined ml-auto">
-                <IoIosArrowForward />
-              </span>
+              <button onClick={disconnect} className="flex w-full items-center">
+                <span className="material-icons-outlined mr-2">
+                  <MdPowerSettingsNew />
+                </span>
+                Log out
+                <span className="material-icons-outlined ml-auto">
+                  <IoIosArrowForward />
+                </span>
+              </button>
             </Link>
           </div>
         </aside>

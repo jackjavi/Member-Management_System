@@ -84,6 +84,7 @@ async function verifyToken(req, res, next) {
         email: user.email,
         role: user.role?.name,
         profilePicture: user.member?.profilePicture,
+        dateOfBirth: user.member?.dateOfBirth,
       },
     });
   } catch (error) {
