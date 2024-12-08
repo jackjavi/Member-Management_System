@@ -5,7 +5,11 @@ import ActivityLog from "./ActivityLog.mjs";
 import UserActivity from "./UserActivity.mjs";
 
 User.belongsTo(Role, { foreignKey: "roleId", as: "role" });
-User.hasOne(Member, { foreignKey: "userId", as: "member" });
+User.hasOne(Member, {
+  foreignKey: "userId",
+  as: "member",
+  onDelete: "CASCADE",
+});
 Member.belongsTo(User, { foreignKey: "userId", as: "user" });
 Role.hasMany(User, { foreignKey: "roleId", as: "users" });
 User.belongsToMany(ActivityLog, {
@@ -18,9 +22,15 @@ ActivityLog.belongsToMany(User, {
   foreignKey: "activityLogId",
   unique: false,
 });
-UserActivity.belongsTo(User, { foreignKey: "userId" });
-User.hasMany(UserActivity, { foreignKey: "userId" });
-UserActivity.belongsTo(ActivityLog, { foreignKey: "activityLogId" });
-ActivityLog.hasMany(UserActivity, { foreignKey: "activityLogId" });
+UserActivity.belongsTo(User, { foreignKey: "userId", onDelete: "CASCADE" });
+User.hasMany(UserActivity, { foreignKey: "userId", onDelete: "CASCADE" });
+UserActivity.belongsTo(ActivityLog, {
+  foreignKey: "activityLogId",
+  onDelete: "CASCADE",
+});
+ActivityLog.hasMany(UserActivity, {
+  foreignKey: "activityLogId",
+  onDelete: "CASCADE",
+});
 
 export { User, Role, Member, ActivityLog, UserActivity };

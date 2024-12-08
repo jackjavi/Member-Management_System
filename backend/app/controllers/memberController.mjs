@@ -31,4 +31,54 @@ async function createMember(req, res) {
   }
 }
 
-export { createMember };
+async function editUserAndMember(req, res) {
+  try {
+    const { userId, name, email, dateOfBirth } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    // Find the user and member
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const member = await Member.findOne({ where: { userId } });
+
+    // Update the user fields if provided
+    if (name || email || roleId) {
+      await user.update({
+        ...(name && { name }),
+        ...(email && { email }),
+      });
+    }
+
+    // Update the member fields if provided
+    if (dateOfBirth || req.file) {
+      if (!member) {
+        return res.status(404).json({ error: "Member not found" });
+      }
+
+      await member.update({
+        ...(dateOfBirth && { dateOfBirth }),
+        ...(req.file && { profilePicture: req.file.path }),
+      });
+    }
+
+    // Log the activity
+    await logUserActivity(userId, "edit-profile");
+
+    res.status(200).json({
+      message: "User and Member details updated successfully",
+      user,
+      member,
+    });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export { createMember, editUserAndMember };

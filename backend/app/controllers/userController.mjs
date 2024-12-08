@@ -64,6 +64,23 @@ async function login(req, res) {
   }
 }
 
+// Fetch users details + role + member details
+async function getUsersDetails(req, res) {
+  try {
+    const users = await User.findAll({
+      include: [
+        { model: Role, as: "role" },
+        { model: Member, as: "member" },
+      ],
+    });
+
+    res.status(200).json({ users });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
+}
+
 async function verifyToken(req, res, next) {
   try {
     const user = await User.findByPk(req.userId, {
@@ -93,4 +110,20 @@ async function verifyToken(req, res, next) {
   }
 }
 
-export { register, login, verifyToken };
+async function deleteUser(req, res) {
+  try {
+    const { id } = req.params;
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    await user.destroy();
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export { register, login, verifyToken, deleteUser, getUsersDetails };

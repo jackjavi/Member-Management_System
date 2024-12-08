@@ -125,13 +125,32 @@ async function getUserActivities(req, res) {
 
 async function viewSystemWideLogs(req, res) {
   try {
-    // Extract page and limit from query parameters
+    const { userId } = req; // Assume this is populated from authentication middleware
     const page = parseInt(req.query.page, 10) || 1; // Default to page 1
     const limit = parseInt(req.query.limit, 10) || 10; // Default to 10 results per page
     const offset = (page - 1) * limit;
 
-    // Fetch logs with pagination
+    // Fetch the authenticated user's role
+    const user = await User.findByPk(userId, {
+      include: {
+        model: Role,
+        as: "role",
+        attributes: ["name"],
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const userRole = user.role.name; // Assuming the role name is stored here
+
+    // Determine the query filter based on the role
+    const whereClause = userRole === "admin" ? {} : { userId };
+
+    // Fetch logs with pagination and the appropriate filter
     const { count, rows: logs } = await UserActivity.findAndCountAll({
+      where: whereClause,
       include: [
         {
           model: ActivityLog,

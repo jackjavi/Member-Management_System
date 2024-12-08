@@ -1,10 +1,11 @@
 import express from "express";
 import sequelize from "./utils/database.mjs";
-import { ActivityLog, Role } from "./app/models/index.mjs";
+import { ActivityLog, Role, User } from "./app/models/index.mjs";
 import appRoutes from "./app/app.mjs";
 import config from "./config/config.mjs";
 import path from "path";
 import { fileURLToPath } from "url";
+import bcrypt from "bcrypt";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,6 +23,7 @@ appRoutes(app);
 sequelize
   .sync({ force: true })
   .then(async () => {
+    // Create roles if they don't exist
     const roles = [{ name: "user" }, { name: "admin" }];
 
     for (const role of roles) {
@@ -31,6 +33,7 @@ sequelize
       });
     }
 
+    // Create activity logs if they don't exist
     const activities = [
       { action: "create", description: "Created a new user" },
       { action: "read", description: "Viewed a resource" },
@@ -47,6 +50,7 @@ sequelize
       { action: "change-password", description: "User changed their password" },
       { action: "change-email", description: "User changed their email" },
       { action: "create-member", description: "User created Member" },
+      { action: "edit-profile", description: "User edited profile" },
     ];
 
     for (const activity of activities) {
@@ -54,6 +58,29 @@ sequelize
         where: { action: activity.action },
         defaults: activity,
       });
+    }
+
+    // Create the admin user
+    const adminRole = await Role.findOne({ where: { name: "admin" } });
+
+    const adminEmail = config.ADMIN_EMAIL;
+    const adminPassword = config.ADMIN_PASSWORD;
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+
+    const [adminUser, created] = await User.findOrCreate({
+      where: { email: adminEmail },
+      defaults: {
+        name: "Admin User",
+        email: adminEmail,
+        password: hashedPassword,
+        roleId: adminRole.id,
+      },
+    });
+
+    if (created) {
+      console.log("Admin user created successfully.");
+    } else {
+      console.log("Admin user already exists.");
     }
 
     console.log("Database synced successfully.");
