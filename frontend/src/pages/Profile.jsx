@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { user, isLoading } = useContext(AuthContext);
+  const isAdmin = user?.role === "admin";
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -82,21 +83,35 @@ const Profile = () => {
                 />
               </div>
 
-              {/* Button to complete member profile */}
-              {showCompleteProfileButton && (
-                <div className="mt-6">
-                  <p className="text-sm text-red-500">
-                    Your profile is incomplete. Please complete your member
-                    profile.
-                  </p>
-                  <Link
-                    to="/profile/add"
-                    className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                  >
-                    Complete Profile
-                  </Link>
+              <div className="flex justify-between ">
+                {/* Button to complete member profile */}
+                {showCompleteProfileButton && (
+                  <div className="mt-6">
+                    <p className="text-sm text-red-500">
+                      Your profile is incomplete. Please complete your member
+                      profile.
+                    </p>
+                    <Link
+                      to="/profile/add"
+                      className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                    >
+                      Complete Profile
+                    </Link>
+                  </div>
+                )}
+
+                {/* Button for admin users to manage users */}
+                <div className="mt-6 flex items-end justify-self-end">
+                  {isAdmin && (
+                    <Link
+                      to="/admin/users"
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Manage Users
+                    </Link>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
 
             {/* Profile Picture */}

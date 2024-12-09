@@ -67,9 +67,10 @@ async function login(req, res) {
 
 async function getUsersDetails(req, res) {
   try {
-    console.log("req.query", req.query);
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const offset = (page - 1) * limit;
     const { role, name, email } = req.query;
-    console.log("role", role, "name", name, "email", email);
 
     const filters = {};
 
@@ -83,15 +84,22 @@ async function getUsersDetails(req, res) {
       filters.email = { [Op.like]: `%${email}%` };
     }
 
-    const users = await User.findAll({
+    const { count, rows: users } = await User.findAndCountAll({
       where: filters,
       include: [
         { model: Role, as: "role" },
         { model: Member, as: "member" },
       ],
+      limit,
+      offset,
     });
 
-    res.status(200).json({ users });
+    res.status(200).json({
+      users,
+      total: count,
+      currentPage: page,
+      totalPages: Math.ceil(count / limit),
+    });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ error: error.message });
