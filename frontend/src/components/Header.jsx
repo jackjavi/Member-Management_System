@@ -38,15 +38,17 @@ const Header = () => {
             </span>
 
             {user.profilePicture ? (
-              <img
-                src={
-                  user.profilePicture.includes("githubusercontent.com")
-                    ? user.profilePicture
-                    : `${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`
-                }
-                alt={user.name}
-                className="w-10 h-10 rounded-full transition-transform duration-300 hover:scale-110 object-cover"
-              />
+              <Link to="/profile">
+                <img
+                  src={
+                    user.profilePicture.includes("githubusercontent.com")
+                      ? user.profilePicture
+                      : `${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`
+                  }
+                  alt={user.name}
+                  className="w-10 h-10 rounded-full transition-transform duration-300 hover:scale-110 object-cover"
+                />
+              </Link>
             ) : (
               <CgProfile className="w-10 h-10" />
             )}
