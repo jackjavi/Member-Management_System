@@ -2,11 +2,10 @@ import React, { useContext } from "react";
 import { CgProfile } from "react-icons/cg";
 import AsideBar from "../components/AsideBar";
 import { AuthContext } from "../context/AuthContextWrapper";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { user, isLoading } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -16,41 +15,8 @@ const Profile = () => {
     return <p>Failed to load profile data.</p>;
   }
 
-  const { name, email, role, profilePicture, dateOfBirth, id } = user;
+  const { name, email, role, profilePicture, dateOfBirth } = user;
   const showCompleteProfileButton = !profilePicture && !dateOfBirth;
-
-  // Delete user function
-  const deleteUser = async () => {
-    const confirm = window.confirm(
-      "Are you sure you want to delete your profile? This action cannot be undone."
-    );
-    if (!confirm) return;
-
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/delete/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.ok) {
-        alert("Your account has been deleted successfully.");
-        navigate("/signup");
-      } else {
-        const data = await response.json();
-        alert(data.error || "Failed to delete the profile.");
-      }
-    } catch (error) {
-      console.error("Error deleting profile:", error);
-      alert(
-        "An error occurred while deleting your profile. Please try again later."
-      );
-    }
-  };
 
   return (
     <div className="bg-indigo-50">
@@ -131,16 +97,6 @@ const Profile = () => {
                   </Link>
                 </div>
               )}
-
-              {/* Delete Profile Button */}
-              <div className="mt-6">
-                <button
-                  onClick={deleteUser}
-                  className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                >
-                  Delete Profile
-                </button>
-              </div>
             </div>
 
             {/* Profile Picture */}

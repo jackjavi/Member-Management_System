@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import dayjs from "dayjs";
@@ -8,14 +8,17 @@ const AdminUsersTable = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [filters, setFilters] = useState({ name: "", email: "", role: "" });
 
-  // Fetch users from API
-  const fetchUsers = async () => {
+  // Fetch users from API with filters
+  const fetchUsers = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
+      const query = new URLSearchParams(filters).toString(); // Serialize filters
+      console.log(query);
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/details`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/details?${query}`,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -30,7 +33,7 @@ const AdminUsersTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [filters]);
 
   // Handle delete user
   const handleDelete = async (userId) => {
@@ -46,7 +49,7 @@ const AdminUsersTable = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   return (
     <div className="bg-indigo-50 min-h-screen overflow-x-hidden pt-36">
@@ -68,6 +71,43 @@ const AdminUsersTable = () => {
               </button>
             </div>
 
+            {/* Filters */}
+            <div className="flex space-x-4 mb-4">
+              <input
+                type="text"
+                placeholder="Filter by name"
+                className="border p-2 rounded-md"
+                onChange={(e) =>
+                  setFilters((prev) => ({ ...prev, name: e.target.value }))
+                }
+              />
+              <input
+                type="text"
+                placeholder="Filter by email"
+                className="border p-2 rounded-md"
+                onChange={(e) =>
+                  setFilters((prev) => ({ ...prev, email: e.target.value }))
+                }
+              />
+              <select
+                className="border p-2 rounded-md"
+                onChange={(e) =>
+                  setFilters((prev) => ({ ...prev, role: e.target.value }))
+                }
+              >
+                <option value="">All Roles</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+              </select>
+              <button
+                onClick={fetchUsers}
+                className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-300"
+              >
+                Apply Filters
+              </button>
+            </div>
+
+            {/* Table */}
             {isLoading ? (
               <div className="text-center py-10 text-gray-600">Loading...</div>
             ) : error ? (

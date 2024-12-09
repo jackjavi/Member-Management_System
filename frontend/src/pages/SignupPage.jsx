@@ -42,53 +42,55 @@ function SignupPage() {
   const { username, email, password } = formData;
 
   return (
-    <form
-      className="max-w-md mx-auto space-y-4 flex flex-col items-center justify-center h-screen w-full"
-      onSubmit={handleSubmit}
-    >
-      <div className="w-full">
-        <label htmlFor="username">Username: </label>
-        <input
-          className="mt-1 mb-4 p-2 w-full outline-dotted outline-slate-800 rounded-md text-gray-700"
-          type="text"
-          id="username"
-          value={username}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="w-full">
-        <label htmlFor="email">Email: </label>
-        <input
-          className="mt-1 mb-4 p-2 w-full outline-dotted outline-slate-800 rounded-md text-gray-700"
-          type="email"
-          id="email"
-          value={email}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="w-full">
-        <label htmlFor="password">Password: </label>
-        <input
-          className="mt-1 mb-4 p-2 w-full outline-dotted outline-slate-800 rounded-md text-gray-700"
-          type="password"
-          id="password"
-          value={password}
-          onChange={handleChange}
-        />
-      </div>
+    <main className="bg-indigo-50">
+      <form
+        className="max-w-md mx-auto space-y-4 flex flex-col items-center justify-center h-screen w-full"
+        onSubmit={handleSubmit}
+      >
+        <div className="w-full">
+          <label htmlFor="username">Username: </label>
+          <input
+            className="mt-1 mb-4 p-2 w-full outline-0 rounded-md text-gray-700"
+            type="text"
+            id="username"
+            value={username}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="w-full">
+          <label htmlFor="email">Email: </label>
+          <input
+            className="mt-1 mb-4 p-2 w-full outline-0 rounded-md text-gray-700"
+            type="email"
+            id="email"
+            value={email}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="w-full">
+          <label htmlFor="password">Password: </label>
+          <input
+            className="mt-1 mb-4 p-2 w-full outline-0 rounded-md text-gray-700"
+            type="password"
+            id="password"
+            value={password}
+            onChange={handleChange}
+          />
+        </div>
 
-      <p className="error">{errorMessage}</p>
+        <p className="error">{errorMessage}</p>
 
-      <p>
-        Already have an account?{" "}
-        <Link to={"/login"}>
-          <span className="underline">Login.</span>
-        </Link>
-      </p>
-      <button className="w-full p-2 rounded bg-green-600 hover:bg-purple-500 transition-colors font-bold ">
-        Signup
-      </button>
-    </form>
+        <p>
+          Already have an account?{" "}
+          <Link to={"/login"}>
+            <span className="underline">Login.</span>
+          </Link>
+        </p>
+        <button className="w-full p-2 rounded bg-green-600 hover:bg-purple-500 transition-colors font-bold ">
+          Signup
+        </button>
+      </form>
+    </main>
   );
 }
 

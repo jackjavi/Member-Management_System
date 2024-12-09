@@ -1,9 +1,12 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
 import { editProfile } from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
   const { user } = useContext(AuthContext);
+  const id = user.id;
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     userId: user.id,
     name: user?.name || "",
@@ -43,6 +46,39 @@ const EditProfile = () => {
       }
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  // Delete user function
+  const deleteUser = async () => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete your profile? This action cannot be undone."
+    );
+    if (!confirm) return;
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/delete/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        alert("Your account has been deleted successfully.");
+        navigate("/signup");
+      } else {
+        const data = await response.json();
+        alert(data.error || "Failed to delete the profile.");
+      }
+    } catch (error) {
+      console.error("Error deleting profile:", error);
+      alert(
+        "An error occurred while deleting your profile. Please try again later."
+      );
     }
   };
 
@@ -164,14 +200,23 @@ const EditProfile = () => {
               </>
             ))}
 
-          {/* Submit Button */}
-          <div>
+          <div className="flex items-center justify-between ">
+            {/* Submit Button */}
             <button
               type="submit"
-              className="inline-flex justify-center rounded-md border border-transparent bg-sky-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+              className="inline-flex  justify-center rounded-md border border-transparent bg-sky-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
             >
               Save Changes
             </button>
+            {/* Delete Profile Button */}
+            <div className="mt-6">
+              <button
+                onClick={deleteUser}
+                className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              >
+                Delete Profile
+              </button>
+            </div>
           </div>
         </form>
       </div>

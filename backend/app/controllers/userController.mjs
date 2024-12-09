@@ -1,6 +1,7 @@
 import { Member, User, Role, UserActivity } from "../models/index.mjs";
 import logUserActivity from "../../utils/logUserActivity.mjs";
 import config from "../../config/config.mjs";
+import { Op } from "sequelize";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -64,10 +65,26 @@ async function login(req, res) {
   }
 }
 
-// Fetch users details + role + member details
 async function getUsersDetails(req, res) {
   try {
+    console.log("req.query", req.query);
+    const { role, name, email } = req.query;
+    console.log("role", role, "name", name, "email", email);
+
+    const filters = {};
+
+    if (role) {
+      filters["$role.name$"] = role;
+    }
+    if (name) {
+      filters.name = { [Op.like]: `%${name}%` };
+    }
+    if (email) {
+      filters.email = { [Op.like]: `%${email}%` };
+    }
+
     const users = await User.findAll({
+      where: filters,
       include: [
         { model: Role, as: "role" },
         { model: Member, as: "member" },
