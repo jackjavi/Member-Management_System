@@ -40,39 +40,71 @@ const AdminUsersTable = () => {
             </div>
 
             {/* Filters */}
-            <div className="flex space-x-4 mb-4">
-              <input
-                type="text"
-                placeholder="Filter by name"
-                className="border p-2 rounded-md"
-                onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, name: e.target.value }))
-                }
-              />
-              <input
-                type="text"
-                placeholder="Filter by email"
-                className="border p-2 rounded-md"
-                onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, email: e.target.value }))
-                }
-              />
-              <select
-                className="border p-2 rounded-md"
-                onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, role: e.target.value }))
-                }
-              >
-                <option value="">All Roles</option>
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-              </select>
-              <button
-                onClick={fetchUsers}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-300"
-              >
-                Apply Filters
-              </button>
+            <div className=" space-x-4 mb-4 flex ">
+              <div className="flex justify-between">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Filter by name"
+                    className="border p-2 rounded-md"
+                    onChange={(e) =>
+                      setFilters((prev) => ({ ...prev, name: e.target.value }))
+                    }
+                  />
+                  <input
+                    type="text"
+                    placeholder="Filter by email"
+                    className="border p-2 rounded-md"
+                    onChange={(e) =>
+                      setFilters((prev) => ({ ...prev, email: e.target.value }))
+                    }
+                  />
+                  <select
+                    className="border p-2 rounded-md"
+                    onChange={(e) =>
+                      setFilters((prev) => ({ ...prev, role: e.target.value }))
+                    }
+                  >
+                    <option value="">All Roles</option>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                  </select>
+                </div>
+                <div>
+                  <select
+                    className="border p-2 rounded-md"
+                    onChange={(e) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        sortBy: e.target.value,
+                      }))
+                    }
+                  >
+                    <option value="id">Sort by ID</option>
+                    <option value="name">Sort by Name</option>
+                    <option value="email">Sort by Email</option>
+                    <option value="createdAt">Sort by Joined Date</option>
+                  </select>
+                  <select
+                    className="border p-2 rounded-md"
+                    onChange={(e) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        sortOrder: e.target.value,
+                      }))
+                    }
+                  >
+                    <option value="ASC">Ascending</option>
+                    <option value="DESC">Descending</option>
+                  </select>{" "}
+                  <button
+                    onClick={fetchUsers}
+                    className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-300"
+                  >
+                    Apply Filters
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Table */}
