@@ -5,6 +5,8 @@ export const UsersContext = createContext();
 
 function UsersContextWrapper({ children }) {
   const [users, setUsers] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [roleDistribution, setRoleDistribution] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
@@ -34,8 +36,9 @@ function UsersContextWrapper({ children }) {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(response.data);
+      setTotalUsers(response.data.total);
       setUsers(response.data.users);
+      setRoleDistribution(response.data.roleDistribution);
       setTotalPages(response.data.totalPages || 1);
     } catch (err) {
       console.error(err);
@@ -57,6 +60,48 @@ function UsersContextWrapper({ children }) {
     if (page < totalPages) setPage(page + 1);
   }
 
+  function handleEditRole(userId) {
+    const newRole = prompt("Enter new role (admin/user):").trim().toLowerCase();
+    if (!["admin", "user"].includes(newRole)) {
+      alert("Invalid role. Please enter 'admin' or 'user'.");
+      return;
+    }
+
+    const token = localStorage.getItem("authToken");
+    axios
+      .put(
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/edit-role`,
+        { userId, roleName: newRole },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then(() => {
+        alert("Role updated successfully.");
+        fetchUsers();
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Failed to update role. Please try again.");
+      });
+  }
+
+  function handleDelete(userId) {
+    const token = localStorage.getItem("authToken");
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      axios
+        .delete(
+          `${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/delete/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        .then(() => fetchUsers())
+        .catch((err) => {
+          console.error(err);
+          alert("Failed to delete user. Please try again.");
+        });
+    }
+  }
+
   const contextValues = {
     users,
     isLoading,
@@ -65,9 +110,13 @@ function UsersContextWrapper({ children }) {
     setFilters,
     page,
     totalPages,
+    totalUsers,
+    roleDistribution,
     handlePrevPage,
     handleNextPage,
     fetchUsers,
+    handleEditRole,
+    handleDelete,
   };
 
   return (

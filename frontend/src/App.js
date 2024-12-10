@@ -44,7 +44,7 @@ function App() {
                 <Route path="/logs" element={<IsLoggedIn />}>
                   <Route index element={<SystemLogsTable />} />
                 </Route>
-                <Route path="admin/users" element={<IsLoggedIn />}>
+                <Route path="/admin/users" element={<IsLoggedIn />}>
                   <Route index element={<AdminUsersTable />} />
                 </Route>
 

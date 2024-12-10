@@ -15,23 +15,9 @@ const AdminUsersTable = () => {
     handlePrevPage,
     handleNextPage,
     fetchUsers,
+    handleEditRole,
+    handleDelete,
   } = useContext(UsersContext);
-
-  // Handle delete user
-  const handleDelete = async (userId) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        // Replace with your API endpoint
-        await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/${userId}`,
-          { method: "DELETE" }
-        );
-        fetchUsers();
-      } catch (err) {
-        alert("Failed to delete user. Please try again.");
-      }
-    }
-  };
 
   return (
     <div className="bg-indigo-50 min-h-screen overflow-x-hidden pt-36">
@@ -127,9 +113,7 @@ const AdminUsersTable = () => {
                           </td>
                           <td className="px-4 py-2 flex space-x-2">
                             <button
-                              onClick={() =>
-                                (window.location.href = `/users/edit/${user.id}`)
-                              }
+                              onClick={() => handleEditRole(user.id)}
                               className="text-indigo-600 hover:text-indigo-800 transition duration-300"
                             >
                               <FiEdit />

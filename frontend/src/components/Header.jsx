@@ -3,6 +3,7 @@ import { AuthContext } from "../context/AuthContextWrapper";
 import Sidebar from "./Sidebar";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
+import mmmLogo from "../assets/images/MMM-Logo.png";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -25,7 +26,7 @@ const Header = () => {
         </button>
         <div className="text-xl font-bold text-blue-900">
           <Link to="/">
-            MM<span className="text-indigo-800">M</span>
+            <img src={mmmLogo} alt="logo" className="h-16 w-16 object-cover" />
           </Link>
         </div>
         {isLoggedIn ? (

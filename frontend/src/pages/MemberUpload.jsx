@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContextWrapper";
+import { useNavigate } from "react-router-dom";
 
 function MemberUpload() {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ function MemberUpload() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const { authenticateUser, user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   function handleInputChange(event) {
     const { id, value } = event.target;
@@ -36,7 +38,7 @@ function MemberUpload() {
       data.append("userId", user.id);
 
       const response = await axios.post(
-        "http://localhost:5000/api/v1/members/create",
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/members/create`,
         data,
         {
           headers: {
@@ -52,6 +54,7 @@ function MemberUpload() {
         await authenticateUser();
         setFormData({ dateOfBirth: "" });
         setFile(null);
+        navigate("/profile");
       }
     } catch (error) {
       console.error(error);

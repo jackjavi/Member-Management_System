@@ -39,7 +39,6 @@ async function editUserAndMember(req, res) {
       return res.status(400).json({ error: "User ID is required" });
     }
 
-    // Find the user and member
     const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -47,7 +46,6 @@ async function editUserAndMember(req, res) {
 
     const member = await Member.findOne({ where: { userId } });
 
-    // Update the user fields if provided
     if (name || email || roleId) {
       await user.update({
         ...(name && { name }),
@@ -55,7 +53,6 @@ async function editUserAndMember(req, res) {
       });
     }
 
-    // Update the member fields if provided
     if (dateOfBirth || req.file) {
       if (!member) {
         return res.status(404).json({ error: "Member not found" });
@@ -67,7 +64,6 @@ async function editUserAndMember(req, res) {
       });
     }
 
-    // Log the activity
     await logUserActivity(userId, "edit-profile");
 
     res.status(200).json({

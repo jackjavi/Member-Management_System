@@ -1,7 +1,7 @@
 import { Member, User, Role, UserActivity } from "../models/index.mjs";
 import logUserActivity from "../../utils/logUserActivity.mjs";
 import config from "../../config/config.mjs";
-import { Op } from "sequelize";
+import { Op, fn, col } from "sequelize";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -94,14 +94,30 @@ async function getUsersDetails(req, res) {
       offset,
     });
 
+    const roleDistribution = await User.findAll({
+      attributes: [[fn("COUNT", col("User.id")), "count"]],
+      include: {
+        model: Role,
+        as: "role",
+        attributes: ["name"],
+      },
+      group: ["role.name"],
+    });
+
+    const formattedRoleDistribution = roleDistribution.map((item) => ({
+      role: item.role.name,
+      count: item.dataValues.count,
+    }));
+
     res.status(200).json({
       users,
       total: count,
       currentPage: page,
       totalPages: Math.ceil(count / limit),
+      roleDistribution: formattedRoleDistribution,
     });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(500).json({ error: error.message });
   }
 }

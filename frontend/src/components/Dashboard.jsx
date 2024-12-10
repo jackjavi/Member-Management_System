@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { LogsContext } from "../context/LogsContextWrapper";
 import { AuthContext } from "../context/AuthContextWrapper";
+import { UsersContext } from "../context/UsersContextWrapper";
 import { HiHome } from "react-icons/hi2";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdPowerSettingsNew } from "react-icons/md";
@@ -11,7 +12,10 @@ import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const { totalLogs } = useContext(LogsContext);
-  const { disconnect } = useContext(AuthContext);
+  const { disconnect, user } = useContext(AuthContext);
+  const { totalUsers, roleDistribution } = useContext(UsersContext);
+  console.log(roleDistribution);
+
   return (
     <div className="bg-indigo-50 min-h-screen overflow-x-hidden  pt-16">
       <div className="pt-16 max-w-7xl mx-auto flex">
@@ -100,13 +104,14 @@ const Dashboard = () => {
         <main className="flex-1 p-4">
           <div className="flex flex-col lg:flex-row gap-4 mb-6">
             <div className="flex-1 bg-indigo-100 border border-indigo-200 rounded-xl p-6 animate-fade-in">
-              <h2 className="text-4xl md:text-5xl text-blue-900">
-                Welcome <br />
-                <strong>Dash</strong>
+              <h2 className="text-4xl md:text-5xl text-blue-900 flex gap-2 flex-col">
+                <span>
+                  Welcome <br />
+                </span>
+                <span>
+                  <strong>{user.name}</strong>
+                </span>
               </h2>
-              <span className="inline-block mt-8 px-8 py-2 rounded-full text-xl font-bold text-white bg-indigo-800">
-                01:51
-              </span>
             </div>
 
             <div className="flex-1 bg-blue-100 border border-blue-200 rounded-xl p-6 animate-fade-in">
@@ -124,29 +129,66 @@ const Dashboard = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div
-              className="bg-white rounded-xl shadow-lg p-6 h-64 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl animate-slide-up"
-              style={{ animationDelay: "0.1s" }}
-            >
-              <h3 className="text-xl font-bold text-indigo-800">
-                Stats Card 1
-              </h3>
+            <div className="flex items-center justify-center bg-gray-100">
+              <div
+                className="bg-white border border-indigo-200 text-indigo-800 rounded-xl shadow-lg p-8 h-64 w-80 flex flex-col items-center justify-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl animate-slide-up"
+                style={{ animationDelay: "0.1s" }}
+              >
+                <h3 className="text-lg font-semibold uppercase tracking-wider mb-4">
+                  Total System Users
+                </h3>
+                <p className="text-6xl font-extrabold">{totalUsers}</p>
+                <div className="mt-4 bg-blue-800 text-white px-3 py-1 rounded-full font-medium text-sm shadow-md">
+                  Live Stats
+                </div>
+              </div>
             </div>
-            <div
-              className="bg-white rounded-xl shadow-lg p-6 h-64 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl animate-slide-up"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <h3 className="text-xl font-bold text-indigo-800">
-                Stats Card 2
-              </h3>
+
+            <div className="flex items-center justify-center bg-gray-100">
+              <div
+                className="bg-white border border-indigo-200 text-indigo-800 rounded-xl shadow-lg p-8 h-64 w-80 flex flex-col items-center justify-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl animate-slide-up"
+                style={{ animationDelay: "0.1s" }}
+              >
+                <h3 className="text-lg font-semibold uppercase tracking-wider mb-4">
+                  Role Distribution
+                </h3>
+                {!roleDistribution.length ? (
+                  <p className="text-xl font-medium flex flex-col">
+                    Not available
+                  </p>
+                ) : (
+                  <div className="text-center">
+                    {roleDistribution.length &&
+                      roleDistribution.map((role) => (
+                        <div key={role.role} className="mb-2">
+                          <span className="text-lg font-bold">
+                            {role.role}s:
+                          </span>{" "}
+                          <span className="text-2xl font-extrabold">
+                            {role.count}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                )}
+                <div className="mt-4 bg-blue-800 text-white px-3 py-1 rounded-full font-medium text-sm shadow-md">
+                  Live Stats
+                </div>
+              </div>
             </div>
-            <div
-              className="bg-white rounded-xl shadow-lg p-6 h-64 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl animate-slide-up"
-              style={{ animationDelay: "0.3s" }}
-            >
-              <h3 className="text-xl font-bold text-indigo-800">
-                Stats Card 3
-              </h3>
+            <div className="flex items-center justify-center bg-gray-100">
+              <div
+                className="bg-white border border-indigo-200 text-indigo-800 rounded-xl shadow-lg p-8 h-64 w-80 flex flex-col items-center justify-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl animate-slide-up"
+                style={{ animationDelay: "0.1s" }}
+              >
+                <h3 className="text-lg font-semibold uppercase tracking-wider mb-4">
+                  Total System Users
+                </h3>
+                <p className="text-6xl font-extrabold">{totalUsers}</p>
+                <div className="mt-4 bg-blue-800 text-white px-3 py-1 rounded-full font-medium text-sm shadow-md">
+                  Live Stats
+                </div>
+              </div>
             </div>
           </div>
         </main>

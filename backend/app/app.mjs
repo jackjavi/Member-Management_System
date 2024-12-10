@@ -1,6 +1,7 @@
 import userRoutes from "./routes/userRoutes.mjs";
-import acrivityRoutes from "./routes/activityRoutes.mjs";
+import activityRoutes from "./routes/activityRoutes.mjs";
 import memberRoutes from "./routes/memberRoutes.mjs";
+import adminRoutes from "./routes/adminRoutes.mjs";
 import errorMiddleware from "./middlewares/errorMiddleware.mjs";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -17,7 +18,9 @@ const appRoutes = (app) => {
   // Member Routes
   app.use("/api/v1/members", memberRoutes);
   // Activity Routes
-  app.use("/api/v1", acrivityRoutes);
+  app.use("/api/v1", activityRoutes);
+  // Admin Routes
+  app.use("/api/v1/admin", adminRoutes);
 };
 
 export default appRoutes;
