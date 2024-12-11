@@ -14,7 +14,7 @@ const LastCard = ({ userId }) => {
         );
         setRecentActivity(response.data.recentActivity);
       } catch (err) {
-        setError(err.response?.data?.message || "Error fetching activity");
+        setError("Error fetching activity" || err.response?.data?.message);
       } finally {
         setLoading(false);
       }
@@ -34,7 +34,9 @@ const LastCard = ({ userId }) => {
   if (error) {
     return (
       <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-8 h-64 w-80 flex flex-col items-center justify-center">
-        <p className="text-lg font-medium text-red-500">Error: {error}</p>
+        <p className="text-lg font-medium text-red-500">
+          No recent activity available
+        </p>
       </div>
     );
   }

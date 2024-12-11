@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
-import Sidebar from "./Sidebar";
+import Sidebar from "./Sidebar.jsx";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import mmmLogo from "../assets/images/MMM-Logo.png";
@@ -31,12 +31,16 @@ const Header = () => {
         </div>
         {isLoggedIn ? (
           <div className="flex items-center space-x-2">
-            <span className="material-icons-outlined p-2 text-2xl cursor-pointer hover:text-indigo-800 transition-transform duration-300 hover:scale-110 hidden md:block">
-              search
-            </span>
-            <span className="material-icons-outlined p-2 text-2xl cursor-pointer hover:text-indigo-800 transition-transform duration-300 hover:scale-110 hidden md:block">
-              notifications
-            </span>
+            <Link to="/logs">
+              <span className="material-icons-outlined p-2 text-2xl cursor-pointer hover:text-indigo-800 transition-transform duration-300 hover:scale-110 hidden md:block">
+                Logs
+              </span>
+            </Link>
+            <Link to="/profile/edit">
+              <span className="material-icons-outlined p-2 text-2xl cursor-pointer hover:text-indigo-800 transition-transform duration-300 hover:scale-110 hidden md:block">
+                Settings
+              </span>
+            </Link>
 
             {user.profilePicture ? (
               <Link to="/profile">
@@ -51,7 +55,9 @@ const Header = () => {
                 />
               </Link>
             ) : (
-              <CgProfile className="w-10 h-10" />
+              <Link to="/profile">
+                <CgProfile className="w-10 h-10" />
+              </Link>
             )}
           </div>
         ) : (
@@ -80,6 +86,8 @@ const Header = () => {
         mobileMenuOpen={mobileMenuOpen}
         toggleMobileMenu={toggleMobileMenu}
         disconnect={disconnect}
+        user={user}
+        setMobileMenuOpen={setMobileMenuOpen}
       />
     </header>
   );

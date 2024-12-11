@@ -21,12 +21,12 @@ const SystemLogsTable = () => {
   }, [page, retrieveLogs]);
 
   return (
-    <div className="bg-indigo-50 min-h-screen overflow-x-hidden pt-36 ">
-      <div className=" max-w-7xl mx-auto flex  ">
+    <div className="bg-indigo-50 min-h-screen overflow-x-hidden md:pt-36 pt-16">
+      <div className="max-w-7xl mx-auto flex">
         <AsideBar />
 
-        <div className=" bg-gray-50  flex-1 p-4 rounded-xl h-[60vh] overflow-y-auto">
-          <div className="max-w-7xl mx-auto px-4 py-2 ">
+        <div className="bg-gray-50 flex-1 p-4 rounded-xl md:h-[60vh] h-full overflow-y-auto">
+          <div className="max-w-7xl mx-auto px-4 py-2">
             <div className="flex justify-between items-center mb-4">
               <h1 className="text-2xl font-bold text-indigo-800">
                 System Logs
@@ -46,7 +46,7 @@ const SystemLogsTable = () => {
               <div className="text-center py-10 text-red-600">{error}</div>
             ) : (
               <>
-                <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
+                <div className="hidden md:block overflow-x-auto bg-white rounded-lg shadow-lg">
                   <table className="table-auto w-full text-left">
                     <thead className="bg-indigo-100">
                       <tr>
@@ -87,6 +87,40 @@ const SystemLogsTable = () => {
                     </tbody>
                   </table>
                 </div>
+
+                <div className="block md:hidden space-y-4">
+                  {logs.map((log, index) => (
+                    <div
+                      key={index}
+                      className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300"
+                    >
+                      <p className="text-gray-600 text-sm">
+                        <span className="font-bold">Timestamp:</span>{" "}
+                        {dayjs(log.timestamp).format("YYYY-MM-DD HH:mm:ss")}
+                      </p>
+                      <p className="text-gray-600 text-sm">
+                        <span className="font-bold">User:</span> {log.User.name}
+                      </p>
+                      <p className="text-gray-600 text-sm">
+                        <span className="font-bold">Email:</span>{" "}
+                        {log.User.email}
+                      </p>
+                      <p className="text-gray-600 text-sm">
+                        <span className="font-bold">Role:</span>{" "}
+                        {log.User.role.name}
+                      </p>
+                      <p className="text-gray-600 text-sm">
+                        <span className="font-bold">Action:</span>{" "}
+                        {log.ActivityLog.action}
+                      </p>
+                      <p className="text-gray-600 text-sm">
+                        <span className="font-bold">Description:</span>{" "}
+                        {log.ActivityLog.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
                 <div className="flex justify-between items-center mt-4">
                   <button
                     disabled={page === 1}

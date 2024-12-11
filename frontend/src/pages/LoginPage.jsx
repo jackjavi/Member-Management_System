@@ -1,6 +1,5 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
-import { LogsContext } from "../context/LogsContextWrapper";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -11,7 +10,6 @@ function LoginPage() {
   });
 
   const { storeToken, authenticateUser } = useContext(AuthContext);
-  const { retriveLogs } = useContext(LogsContext);
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -31,7 +29,6 @@ function LoginPage() {
       if (response.status === 200) {
         storeToken(response.data.token);
         await authenticateUser();
-        await retriveLogs();
       }
     } catch (error) {
       console.log(error);

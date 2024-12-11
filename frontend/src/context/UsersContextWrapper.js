@@ -60,7 +60,7 @@ function UsersContextWrapper({ children }) {
     if (page < totalPages) setPage(page + 1);
   }
 
-  function handleEditRole(userId) {
+  async function handleEditRole(userId) {
     const newRole = prompt("Enter new role (admin/user):").trim().toLowerCase();
     if (!["admin", "user"].includes(newRole)) {
       alert("Invalid role. Please enter 'admin' or 'user'.");
@@ -68,7 +68,7 @@ function UsersContextWrapper({ children }) {
     }
 
     const token = localStorage.getItem("authToken");
-    axios
+    await axios
       .put(
         `${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/edit-role`,
         { userId, roleName: newRole },
@@ -84,10 +84,10 @@ function UsersContextWrapper({ children }) {
       });
   }
 
-  function handleDelete(userId) {
+  async function handleDelete(userId) {
     const token = localStorage.getItem("authToken");
     if (window.confirm("Are you sure you want to delete this user?")) {
-      axios
+      await axios
         .delete(
           `${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/delete/${userId}`,
           {

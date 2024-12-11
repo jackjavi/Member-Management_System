@@ -20,11 +20,11 @@ const AdminUsersTable = () => {
   } = useContext(UsersContext);
 
   return (
-    <div className="bg-indigo-50 min-h-screen overflow-x-hidden pt-36">
+    <div className="bg-indigo-50 min-h-screen overflow-x-hidden md:pt-36 pt-16">
       <div className="max-w-7xl mx-auto flex">
         <AsideBar />
 
-        <div className="bg-gray-50 flex-1 p-4 rounded-xl h-[75vh] overflow-y-auto">
+        <div className="bg-gray-50 flex-1 p-4 rounded-xl md:h-[75vh] h-screen overflow-y-auto">
           <div className="max-w-7xl mx-auto px-4 py-2">
             <div className="flex justify-between items-center mb-4">
               <h1 className="text-2xl font-bold text-indigo-800">
@@ -114,7 +114,7 @@ const AdminUsersTable = () => {
               <div className="text-center py-10 text-red-600">{error}</div>
             ) : (
               <>
-                <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
+                <div className="overflow-x-auto bg-white rounded-lg shadow-lg hidden md:block">
                   <table className="table-auto w-full text-left">
                     <thead className="bg-indigo-100">
                       <tr>
@@ -162,6 +162,58 @@ const AdminUsersTable = () => {
                     </tbody>
                   </table>
                 </div>
+
+                {/* Responsive card view for small screens */}
+                <div className="md:hidden space-y-4">
+                  {users.map((user) => (
+                    <div
+                      key={user.id}
+                      className="bg-white p-4 rounded-lg shadow-md flex flex-col space-y-2"
+                    >
+                      <div className="flex justify-between">
+                        <span className="font-bold text-indigo-800">ID:</span>
+                        <span>{user.id}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="font-bold text-indigo-800">Name:</span>
+                        <span>{user.name}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="font-bold text-indigo-800">
+                          Email:
+                        </span>
+                        <span>{user.email}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="font-bold text-indigo-800">Role:</span>
+                        <span className="capitalize">{user.role.name}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="font-bold text-indigo-800">
+                          Joined:
+                        </span>
+                        <span>
+                          {dayjs(user.createdAt).format("YYYY-MM-DD")}
+                        </span>
+                      </div>
+                      <div className="flex space-x-4">
+                        <button
+                          onClick={() => handleEditRole(user.id)}
+                          className="text-indigo-600 hover:text-indigo-800 transition duration-300"
+                        >
+                          <FiEdit />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(user.id)}
+                          className="text-red-600 hover:text-red-800 transition duration-300"
+                        >
+                          <FiTrash2 />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
                 <div className="flex justify-between items-center mt-4">
                   <button
                     disabled={page === 1}

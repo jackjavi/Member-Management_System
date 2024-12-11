@@ -5,11 +5,12 @@ import { MdPowerSettingsNew } from "react-icons/md";
 import { TbLogs } from "react-icons/tb";
 import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
+import { MdAdminPanelSettings } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContextWrapper";
 
 const AsideBar = () => {
-  const { disconnect } = useContext(AuthContext);
+  const { disconnect, user } = useContext(AuthContext);
   return (
     <aside
       className={`sidebar fixed lg:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] lg:h-auto transform  lg:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto px-4 hidden md:block`}
@@ -40,11 +41,19 @@ const AsideBar = () => {
           </span>
         </Link>
         <Link
-          href="#"
-          className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
+          to={user.role === "admin" ? "/admin/users" : "#"}
+          className={`flex items-center text-gray-600 ${
+            user.role === "admin"
+              ? "hover:text-indigo-800"
+              : "cursor-not-allowed opacity-50"
+          } py-4 transition-all duration-300 ${
+            user.role === "admin" ? "hover:translate-x-1" : ""
+          }`}
         >
-          <span className="material-icons-outlined mr-2">file_copy</span>
-          Another menu item
+          <span className="material-icons-outlined mr-2">
+            <MdAdminPanelSettings />
+          </span>
+          Admin Panel
           <span className="material-icons-outlined ml-auto">
             <IoIosArrowForward />
           </span>

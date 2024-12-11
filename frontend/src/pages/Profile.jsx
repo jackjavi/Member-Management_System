@@ -33,23 +33,25 @@ const Profile = () => {
   const showCompleteProfileButton = !profilePicture || !dateOfBirth;
 
   return (
-    <div className="bg-indigo-50 min-h-screen">
-      <div className="pt-32 max-w-7xl mx-auto flex lg:gap-[10%]">
+    <div className="bg-indigo-50 h-screen">
+      <div className="md:pt-32 pt-16 pb-4 md:max-w-7xl md:mx-auto flex lg:gap-[10%]">
         <AsideBar />
-        <div className="flex flex-col flex-auto px-6 lg:px-12">
-          <h2 className="text-3xl font-semibold text-gray-800">My Profile</h2>
-          <p className="mt-2 text-gray-500 text-sm">
+        <div className="flex flex-col flex-auto  lg:px-12">
+          <h2 className="text-3xl font-semibold hidden md:block text-gray-800">
+            My Profile
+          </h2>
+          <p className="mt-2 hidden md:block text-gray-500 text-sm">
             Account details and preferences.
           </p>
 
-          <div className="mt-8 bg-white rounded-xl shadow-lg p-8 flex flex-col lg:flex-row gap-12">
+          <div className="md:mt-8 bg-white h-screen md:h-full rounded-xl shadow-lg p-8 flex flex-col lg:flex-row gap-12">
             {/* Left Section: Profile Details */}
-            <div className="flex-1 space-y-6">
+            <div className="md:flex-1 space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-500">
                   Full Name
                 </label>
-                <p className="mt-1 text-xl text-gray-800 font-bold">
+                <p className="mt-1 text-lg md:text-xl text-gray-800 font-bold">
                   {name || "N/A"}
                 </p>
               </div>
@@ -58,7 +60,7 @@ const Profile = () => {
                 <label className="block text-sm font-medium text-gray-500">
                   Email
                 </label>
-                <p className="mt-1 text-xl text-gray-800 font-bold">
+                <p className="mt-1 text-lg md:text-xl text-gray-800 font-bold">
                   {email || "N/A"}
                 </p>
               </div>
@@ -67,7 +69,7 @@ const Profile = () => {
                 <label className="block text-sm font-medium text-gray-500">
                   Role
                 </label>
-                <p className="mt-1 text-xl text-gray-800 font-bold">
+                <p className="mt-1 text-lg md:text-xl text-gray-800 font-bold">
                   {role || "N/A"}
                 </p>
               </div>
@@ -76,7 +78,7 @@ const Profile = () => {
                 <label className="block text-sm font-medium text-gray-500">
                   Date of Birth
                 </label>
-                <p className="mt-1 text-xl text-gray-800 font-bold">
+                <p className="mt-1 text-lg md:text-xl text-gray-800 font-bold">
                   {dateOfBirth || "N/A"}
                 </p>
               </div>
@@ -99,7 +101,7 @@ const Profile = () => {
             </div>
 
             {/* Right Section: Profile Picture */}
-            <div className="flex-shrink-0 lg:w-48 flex md:flex-col md:justify-between gap-8 md:gap-0 items-center">
+            <div className="flex-shrink-0 lg:w-48 flex flex-col md:justify-between gap-8 md:gap-0 items-center">
               <div className="relative w-32 h-32 rounded-full overflow-hidden shadow-lg">
                 {profilePicture ? (
                   <img

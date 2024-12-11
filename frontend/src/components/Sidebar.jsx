@@ -6,8 +6,16 @@ import { Link } from "react-router-dom";
 import { FaWindowClose } from "react-icons/fa";
 import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
+import { MdAdminPanelSettings } from "react-icons/md";
+import { TbLogs } from "react-icons/tb";
 
-const Sidebar = ({ mobileMenuOpen, toggleMobileMenu, disconnect }) => {
+const Sidebar = ({
+  mobileMenuOpen,
+  toggleMobileMenu,
+  disconnect,
+  user,
+  setMobileMenuOpen,
+}) => {
   return (
     <aside
       className={`fixed top-0 left-0 w-[240px] h-full bg-indigo-50 transform ${
@@ -27,6 +35,7 @@ const Sidebar = ({ mobileMenuOpen, toggleMobileMenu, disconnect }) => {
       <div className="bg-white rounded-xl shadow-lg mb-6 p-4">
         <Link
           to="/"
+          onClick={() => setMobileMenuOpen(!setMobileMenuOpen)}
           className="flex items-center text-gray-600 hover:text-indigo-800 py-4"
         >
           <HiHome className="mr-2" />
@@ -34,25 +43,42 @@ const Sidebar = ({ mobileMenuOpen, toggleMobileMenu, disconnect }) => {
           <IoIosArrowForward className="ml-auto" />
         </Link>
         <Link
-          href="#"
-          className="flex items-center text-gray-600 hover:text-indigo-800 py-4"
+          to="/logs"
+          onClick={() => setMobileMenuOpen(!setMobileMenuOpen)}
+          className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
         >
-          <span className="material-icons-outlined mr-2">tune</span>
-          Some menu item
-          <IoIosArrowForward className="ml-auto" />
+          <span className="material-icons-outlined mr-2">
+            <TbLogs />
+          </span>
+          Logs
+          <span className="material-icons-outlined ml-auto">
+            <IoIosArrowForward />
+          </span>
         </Link>
         <Link
-          href="#"
-          className="flex items-center text-gray-600 hover:text-indigo-800 py-4"
+          to={user.role === "admin" ? "/admin/users" : "#"}
+          onClick={() => setMobileMenuOpen(!setMobileMenuOpen)}
+          className={`flex items-center text-gray-600 ${
+            user.role === "admin"
+              ? "hover:text-indigo-800"
+              : "cursor-not-allowed opacity-50"
+          } py-4 transition-all duration-300 ${
+            user.role === "admin" ? "hover:translate-x-1" : ""
+          }`}
         >
-          <span className="material-icons-outlined mr-2">file_copy</span>
-          Another menu item
-          <IoIosArrowForward className="ml-auto" />
+          <span className="material-icons-outlined mr-2">
+            <MdAdminPanelSettings />
+          </span>
+          Admin Panel
+          <span className="material-icons-outlined ml-auto">
+            <IoIosArrowForward />
+          </span>
         </Link>
       </div>
       <div className="bg-white rounded-xl shadow-lg p-4">
         <Link
           to="/profile"
+          onClick={() => setMobileMenuOpen(!setMobileMenuOpen)}
           className="flex items-center text-gray-600 hover:text-indigo-800 py-4"
         >
           <span className="material-icons-outlined mr-2">
@@ -63,6 +89,7 @@ const Sidebar = ({ mobileMenuOpen, toggleMobileMenu, disconnect }) => {
         </Link>
         <Link
           to="/profile/edit"
+          onClick={() => setMobileMenuOpen(!setMobileMenuOpen)}
           className="flex items-center text-gray-600 hover:text-indigo-800 py-4"
         >
           <span className="material-icons-outlined mr-2">
@@ -73,6 +100,7 @@ const Sidebar = ({ mobileMenuOpen, toggleMobileMenu, disconnect }) => {
         </Link>
         <Link
           href="#"
+          onClick={() => setMobileMenuOpen(!setMobileMenuOpen)}
           className="flex items-center text-gray-600 hover:text-indigo-800 py-4"
         >
           <button onClick={disconnect} className="flex w-full items-center">

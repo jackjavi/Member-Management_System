@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { LogsContext } from "../context/LogsContextWrapper";
 import { AuthContext } from "../context/AuthContextWrapper";
 import { UsersContext } from "../context/UsersContextWrapper";
@@ -15,11 +15,14 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
   const { totalLogs } = useContext(LogsContext);
   const { disconnect, user } = useContext(AuthContext);
-  const { totalUsers, roleDistribution } = useContext(UsersContext);
-  console.log(roleDistribution);
+  const { totalUsers, roleDistribution, fetchUsers } = useContext(UsersContext);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   return (
-    <div className="bg-indigo-50 min-h-screen overflow-x-hidden  pt-16">
+    <div className="bg-indigo-50 min-h-screen overflow-x-hidden  md:pt-16 pt-8">
       <div className="pt-16 max-w-7xl mx-auto flex">
         <aside
           className={`sidebar fixed lg:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] lg:h-auto transform  lg:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden md:block`}
@@ -186,7 +189,9 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <LastCard userId={user.id} />
+            <div className="flex items-center justify-center ">
+              <LastCard userId={user.id} />
+            </div>
           </div>
         </main>
       </div>
