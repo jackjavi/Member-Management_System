@@ -71,7 +71,7 @@ function MemberUpload() {
       <div className="w-full">
         <label htmlFor="dateOfBirth">Date of Birth:</label>
         <input
-          className="mt-1 mb-4 p-2 w-full outline-dotted outline-slate-800 rounded-md text-gray-700"
+          className="mt-1 mb-4 p-2 w-full outline outline-1 outline-slate-800 rounded-md text-gray-700"
           type="date"
           id="dateOfBirth"
           value={formData.dateOfBirth}
@@ -81,7 +81,7 @@ function MemberUpload() {
       <div className="w-full">
         <label htmlFor="profilePicture">Profile Picture:</label>
         <input
-          className="mt-1 mb-4 p-2 w-full outline-dotted outline-slate-800 rounded-md text-gray-700"
+          className="mt-1 mb-4 p-2 w-full outline outline-1 outline-slate-800 rounded-md text-gray-700"
           type="file"
           id="profilePicture"
           onChange={handleFileChange}
@@ -89,7 +89,7 @@ function MemberUpload() {
       </div>
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       {successMessage && <p className="text-green-500">{successMessage}</p>}
-      <button className="w-full p-2 rounded bg-blue-600 hover:bg-blue-700 transition-colors font-bold">
+      <button className="w-full p-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition-colors font-bold">
         Submit
       </button>
     </form>
