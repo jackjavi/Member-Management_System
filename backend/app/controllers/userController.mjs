@@ -168,4 +168,36 @@ async function deleteUser(req, res) {
   }
 }
 
-export { register, login, verifyToken, deleteUser, getUsersDetails };
+async function changePassword(req, res) {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const user = await User.findByPk(req.userId);
+    if (!user || !(await bcrypt.compare(oldPassword, user.password))) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    await logUserActivity(user.id, "change-password");
+
+    res.status(200).json({ message: "Password changed successfully" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export {
+  register,
+  login,
+  verifyToken,
+  deleteUser,
+  getUsersDetails,
+  changePassword,
+};

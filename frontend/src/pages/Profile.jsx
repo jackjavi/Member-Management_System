@@ -1,5 +1,8 @@
 import React, { useContext } from "react";
 import { CgProfile } from "react-icons/cg";
+import { MdEdit } from "react-icons/md";
+import { AiOutlineCamera } from "react-icons/ai";
+import { BsShieldLock } from "react-icons/bs";
 import AsideBar from "../components/AsideBar";
 import { AuthContext } from "../context/AuthContextWrapper";
 import { Link } from "react-router-dom";
@@ -31,49 +34,49 @@ const Profile = () => {
 
   return (
     <div className="bg-indigo-50 min-h-screen">
-      <div className="pt-32 max-w-7xl mx-auto flex lg:gap-[10%] ">
+      <div className="pt-32 max-w-7xl mx-auto flex lg:gap-[10%]">
         <AsideBar />
-        <div className="flex flex-col flex-auto px-6 lg:px-12 ">
-          <h2 className="text-2xl font-semibold text-gray-800">My Profile</h2>
+        <div className="flex flex-col flex-auto px-6 lg:px-12">
+          <h2 className="text-3xl font-semibold text-gray-800">My Profile</h2>
           <p className="mt-2 text-gray-500 text-sm">
             Account details and preferences.
           </p>
 
-          <div className="mt-8 bg-indigo-100 rounded-xl shadow-md p-6 lg:p-8 flex flex-col lg:flex-row gap-8">
+          <div className="mt-8 bg-white rounded-xl shadow-lg p-8 flex flex-col lg:flex-row gap-12">
             {/* Left Section: Profile Details */}
             <div className="flex-1 space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-500">
                   Full Name
                 </label>
-                <p className="mt-1 text-lg text-gray-800 font-semibold">
+                <p className="mt-1 text-xl text-gray-800 font-bold">
                   {name || "N/A"}
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-500">
                   Email
                 </label>
-                <p className="mt-1 text-lg text-gray-800 font-semibold">
+                <p className="mt-1 text-xl text-gray-800 font-bold">
                   {email || "N/A"}
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-500">
                   Role
                 </label>
-                <p className="mt-1 text-lg text-gray-800 font-semibold">
+                <p className="mt-1 text-xl text-gray-800 font-bold">
                   {role || "N/A"}
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-500">
                   Date of Birth
                 </label>
-                <p className="mt-1 text-lg text-gray-800 font-semibold">
+                <p className="mt-1 text-xl text-gray-800 font-bold">
                   {dateOfBirth || "N/A"}
                 </p>
               </div>
@@ -81,13 +84,14 @@ const Profile = () => {
               {showCompleteProfileButton && (
                 <div className="mt-6">
                   <p className="text-sm text-red-500 mb-2">
-                    Your profile is incomplete. Please complete your profile for
-                    a better experience.
+                    Your profile is incomplete. Please complete it for a better
+                    experience.
                   </p>
                   <Link
                     to="/profile/add"
-                    className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg shadow hover:bg-red-700 focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg shadow hover:bg-red-700 focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                   >
+                    <AiOutlineCamera size={20} />
                     Complete Profile
                   </Link>
                 </div>
@@ -96,7 +100,7 @@ const Profile = () => {
 
             {/* Right Section: Profile Picture */}
             <div className="flex-shrink-0 lg:w-48 flex md:flex-col md:justify-between gap-8 md:gap-0 items-center">
-              <div className="relative w-32 h-32 rounded-full overflow-hidden shadow-md">
+              <div className="relative w-32 h-32 rounded-full overflow-hidden shadow-lg">
                 {profilePicture ? (
                   <img
                     src={
@@ -113,16 +117,24 @@ const Profile = () => {
                   </div>
                 )}
               </div>
+              {/* Edit Profile */}
+              <Link
+                to="/profile/edit"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-lg shadow hover:bg-indigo-100 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                <MdEdit size={20} />
+                Edit Profile
+              </Link>
+
               {/* Admin Actions */}
               {isAdmin && (
-                <div className="mt-6">
-                  <Link
-                    to="/admin/users"
-                    className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg shadow hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Manage Users
-                  </Link>
-                </div>
+                <Link
+                  to="/admin/users"
+                  className="mt-6 flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg shadow hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <BsShieldLock size={20} />
+                  Manage Users
+                </Link>
               )}
             </div>
           </div>

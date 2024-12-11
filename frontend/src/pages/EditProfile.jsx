@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
 import { editProfile } from "../api/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const EditProfile = () => {
   const { user } = useContext(AuthContext);
@@ -85,12 +85,23 @@ const EditProfile = () => {
   return (
     <div className="bg-indigo-50">
       <div className="pt-32 max-w-7xl mx-auto flex flex-col px-4 min-h-screen">
-        <h2 className="text-lg font-medium leading-6 text-gray-900">
-          Edit Profile
-        </h2>
-        <p className="mt-1 text-sm text-gray-500">
-          Update your account information below.
-        </p>
+        <div className="flex justify-between">
+          <div className="flex flex-col  ">
+            <h2 className="text-lg font-medium leading-6 text-gray-900">
+              Edit Profile
+            </h2>
+            <p className="mt-1 text-sm text-gray-500">
+              Update your account information below.
+            </p>
+          </div>
+          <div>
+            <Link to="/profile/change-password">
+              <button className="inline-flex  justify-center rounded-md border border-transparent bg-sky-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2">
+                Change Password
+              </button>
+            </Link>
+          </div>
+        </div>
 
         <form className="mt-6 space-y-6" onSubmit={handleSubmit}>
           {/* Name */}
@@ -128,29 +139,6 @@ const EditProfile = () => {
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
             />
           </div>
-
-          {/* Role 
-        <div>
-          <label
-            htmlFor="roleId"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Role
-          </label>
-          <select
-            name="roleId"
-            id="roleId"
-            value={formData.roleId}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
-          >
-            <option value="">Select Role</option>
-            <option value="1">Admin</option>
-            <option value="2">Member</option>
-            <option value="3">Viewer</option>
-          </select>
-        </div>
-        */}
 
           {user.profilePIcture ||
             (user.dateOfBirth && (

@@ -13,6 +13,7 @@ import SystemLogsTable from "./components/SystemLogsTable";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import AdminUsersTable from "./components/AdminUsersTable";
+import ChangePassword from "./pages/ChangePassword";
 
 function App() {
   return (
@@ -46,6 +47,9 @@ function App() {
                 </Route>
                 <Route path="/admin/users" element={<IsLoggedIn />}>
                   <Route index element={<AdminUsersTable />} />
+                </Route>
+                <Route path="/profile/change-password" element={<IsLoggedIn />}>
+                  <Route index element={<ChangePassword />} />
                 </Route>
 
                 <Route path="*" element={<h1>Not Found</h1>} />

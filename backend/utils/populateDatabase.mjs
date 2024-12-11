@@ -26,7 +26,6 @@ async function populateDatabase() {
       action: "forgot-password",
       description: "User requested a password reset",
     },
-    { action: "reset-password", description: "User reset their password" },
     { action: "change-password", description: "User changed their password" },
     { action: "change-email", description: "User changed their email" },
     { action: "create-member", description: "User created Member" },

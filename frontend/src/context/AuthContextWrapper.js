@@ -48,6 +48,28 @@ function AuthContextWrapper({ children }) {
     authenticateUser();
   }
 
+  const changePassword = async (oldPassword, newPassword) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) throw new Error("User not authenticated");
+
+      const response = await axios.put(
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/change-password`,
+        { oldPassword, newPassword },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Password changed successfully!");
+      }
+    } catch (error) {
+      console.error("Error changing password:", error);
+      alert(error.response?.data?.error || "Failed to change password");
+    }
+  };
+
   const contextValues = {
     user,
     storeToken,
@@ -56,6 +78,7 @@ function AuthContextWrapper({ children }) {
     isLoading,
     isLoggedIn,
     disconnect,
+    changePassword,
   };
   return (
     <AuthContext.Provider value={contextValues}>
