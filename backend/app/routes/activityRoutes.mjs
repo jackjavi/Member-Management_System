@@ -4,6 +4,7 @@ import {
   getAllActivities,
   getActivityById,
   updateActivity,
+  getRecentActivity,
   deleteActivity,
   linkActivityToUser,
   getUserActivities,
@@ -17,6 +18,7 @@ router.post("/activities", createActivity);
 router.get("/activities", getAllActivities);
 router.get("/activities/:id", getActivityById);
 router.put("/activities/:id", updateActivity);
+router.get("/recent-activity/:userId", getRecentActivity);
 router.delete("/activities/:id", deleteActivity);
 router.post("/user-activities", linkActivityToUser);
 router.get("/users/:userId/activities", getUserActivities);

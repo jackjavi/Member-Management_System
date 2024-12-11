@@ -180,10 +180,46 @@ async function viewSystemWideLogs(req, res) {
   }
 }
 
+async function getRecentActivity(req, res) {
+  try {
+    const { userId } = req.params;
+
+    const activities = await UserActivity.findAll({
+      where: { userId },
+      include: [
+        {
+          model: ActivityLog,
+          attributes: ["action", "description"],
+        },
+      ],
+      order: [["timestamp", "DESC"]],
+      limit: 1,
+    });
+
+    if (activities.length === 0) {
+      return res.status(404).json({ message: "No recent activity found" });
+    }
+
+    const recentActivity = activities[0].ActivityLog;
+
+    res.status(200).json({
+      recentActivity: {
+        action: recentActivity.action,
+        description: recentActivity.description,
+        timestamp: activities[0].timestamp,
+      },
+    });
+  } catch (error) {
+    console.error("Error getting recent activity:", error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
 export {
   createActivity,
   getAllActivities,
   getActivityById,
+  getRecentActivity,
   updateActivity,
   deleteActivity,
   linkActivityToUser,

@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { LogsContext } from "../context/LogsContextWrapper";
 import { AuthContext } from "../context/AuthContextWrapper";
 import { UsersContext } from "../context/UsersContextWrapper";
+import LastCard from "./LastCard";
+import { MdAdminPanelSettings } from "react-icons/md";
 import { HiHome } from "react-icons/hi2";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdPowerSettingsNew } from "react-icons/md";
@@ -48,11 +50,19 @@ const Dashboard = () => {
               </span>
             </Link>
             <Link
-              href="#"
-              className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
+              to={user.role === "admin" ? "/admin/users" : "#"}
+              className={`flex items-center text-gray-600 ${
+                user.role === "admin"
+                  ? "hover:text-indigo-800"
+                  : "cursor-not-allowed opacity-50"
+              } py-4 transition-all duration-300 ${
+                user.role === "admin" ? "hover:translate-x-1" : ""
+              }`}
             >
-              <span className="material-icons-outlined mr-2">file_copy</span>
-              Another menu item
+              <span className="material-icons-outlined mr-2">
+                <MdAdminPanelSettings />
+              </span>
+              Admin Panel
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
@@ -176,20 +186,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-center bg-gray-100">
-              <div
-                className="bg-white border border-indigo-200 text-indigo-800 rounded-xl shadow-lg p-8 h-64 w-80 flex flex-col items-center justify-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl animate-slide-up"
-                style={{ animationDelay: "0.1s" }}
-              >
-                <h3 className="text-lg font-semibold uppercase tracking-wider mb-4">
-                  Total System Users
-                </h3>
-                <p className="text-6xl font-extrabold">{totalUsers}</p>
-                <div className="mt-4 bg-blue-800 text-white px-3 py-1 rounded-full font-medium text-sm shadow-md">
-                  Live Stats
-                </div>
-              </div>
-            </div>
+            <LastCard userId={user.id} />
           </div>
         </main>
       </div>

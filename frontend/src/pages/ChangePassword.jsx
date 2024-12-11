@@ -3,7 +3,7 @@ import { AuthContext } from "../context/AuthContextWrapper";
 import { useNavigate } from "react-router-dom";
 
 const ChangePassword = () => {
-  const { user, changePassword } = useContext(AuthContext);
+  const { changePassword } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [passwordData, setPasswordData] = useState({
@@ -56,12 +56,12 @@ const ChangePassword = () => {
               Current Password
             </label>
             <input
-              type="password"
+              type="text"
               name="oldPassword"
               id="oldPassword"
               value={passwordData.oldPassword}
               onChange={handlePasswordChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
+              className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
               required
             />
           </div>
@@ -74,12 +74,12 @@ const ChangePassword = () => {
               New Password
             </label>
             <input
-              type="password"
+              type="text"
               name="newPassword"
               id="newPassword"
               value={passwordData.newPassword}
               onChange={handlePasswordChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
+              className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
               required
             />
           </div>

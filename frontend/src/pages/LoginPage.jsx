@@ -1,7 +1,8 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
+import { LogsContext } from "../context/LogsContextWrapper";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -10,9 +11,9 @@ function LoginPage() {
   });
 
   const { storeToken, authenticateUser } = useContext(AuthContext);
+  const { retriveLogs } = useContext(LogsContext);
 
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
 
   function handleChange(event) {
     const value = event.currentTarget.value;
@@ -27,11 +28,10 @@ function LoginPage() {
         `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/login`,
         formData
       );
-      console.log(response);
       if (response.status === 200) {
         storeToken(response.data.token);
         await authenticateUser();
-        navigate("/upload");
+        await retriveLogs();
       }
     } catch (error) {
       console.log(error);

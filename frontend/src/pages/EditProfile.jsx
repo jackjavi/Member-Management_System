@@ -4,7 +4,7 @@ import { editProfile } from "../api/api";
 import { useNavigate, Link } from "react-router-dom";
 
 const EditProfile = () => {
-  const { user } = useContext(AuthContext);
+  const { user, authenticateUser } = useContext(AuthContext);
   const id = user.id;
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -40,16 +40,16 @@ const EditProfile = () => {
     data.append("file", formData.profilePicture);
 
     try {
-      const response = await editProfile(data);
-      if (response.status === 200) {
-        alert("Profile updated successfully!");
-      }
+      await editProfile(data);
+      await authenticateUser();
+
+      alert("Profile updated successfully!");
+      navigate("/profile");
     } catch (error) {
       console.error(error);
     }
   };
 
-  // Delete user function
   const deleteUser = async () => {
     const confirm = window.confirm(
       "Are you sure you want to delete your profile? This action cannot be undone."
@@ -192,6 +192,7 @@ const EditProfile = () => {
             {/* Submit Button */}
             <button
               type="submit"
+              onClick={handleSubmit}
               className="inline-flex  justify-center rounded-md border border-transparent bg-sky-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
             >
               Save Changes
@@ -199,6 +200,7 @@ const EditProfile = () => {
             {/* Delete Profile Button */}
             <div className="mt-6">
               <button
+                type="button"
                 onClick={deleteUser}
                 className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               >
