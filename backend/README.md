@@ -41,11 +41,11 @@ git clone https://github.com/jackjavi/Member-Management_System.git
 cd Member-Management_System
 ```
 
-### Frontend Setup
+### Backend Setup
 
-1. Navigate to the frontend directory:
+1. Navigate to the backend directory:
    ```bash
-   cd ../frontend
+   cd backend
    ```
 2. Install dependencies:
    ```bash
@@ -57,52 +57,28 @@ cd Member-Management_System
    ```
 4. Fill in the required environment variables in the `.env` file:
 
-   - `REACT_APP_BACKEND_URL` - Backend API base URL (e.g., `http://localhost:5000`).
+   - `JWT_SECRET` - Secret for signing JWT tokens.
+   - `ADMIN_EMAIL` - Email for the default admin user.
+   - `ADMIN_PASSWORD` - Password for the default admin user.
 
-5. Start the development server:
+5. Run Sequelize migrations to set up the database:
+
    ```bash
-   npm start
+   npx sequelize-cli db:migrate
    ```
-   **Note**: The frontend will run on `http://localhost:3000` by default.
 
----
+   **Note**: This step initializes the database with necessary tables, default roles (e.g., "admin" and "user"), and activity log types.
 
-## Usage
+6. Seed 50 test users and their associated actions:
 
-1. Log in using the admin credentials specified in the `.env` file.
-2. Explore the dashboard to:
-   - Manage members.
-   - View activity logs.
-   - Edit user roles, or delete members.
-3. Use the seeded users to test features (raw passwords available in console after `npm run seed`).
+   ```bash
+   npm run seed
+   ```
 
----
+   **Note**: Raw passwords for seeded users will be logged in the console.
 
-## Technical Details
-
-### Frontend
-
-- Built with **React** and styled using **Tailwind CSS**.
-- Navigation handled with **React Router**.
-- State management using **Context API**.
-
-## Development Scripts
-
-### Frontend
-
-- **Start development server**:
-  ```bash
-  npm start
-  ```
-- **Build for production**:
-  ```bash
-  npm run build
-  ```
-
----
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
+7. Start the backend server:
+   ```bash
+    npm start
+   ```
+   **Note**: The backend will run on `http://localhost:5000` by default.
