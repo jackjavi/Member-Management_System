@@ -67,8 +67,6 @@ cd Member-Management_System
    npx sequelize-cli db:migrate
    ```
 
-   **Note**: This step initializes the database with necessary tables, default roles (e.g., "admin" and "user"), and activity log types.
-
 6. Seed 50 test users and their associated actions:
 
    ```bash
