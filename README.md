@@ -1,5 +1,7 @@
 # Member Management System
 
+![Member ManagementSystem Dashboard](http://res.cloudinary.com/popit/image/upload/v1734019995/wxwq6qczllwjlflx5nt4.png)
+
 ## Overview
 
 This project is a **Full-Stack Member Management System** designed using the MERN stack. The system features:
