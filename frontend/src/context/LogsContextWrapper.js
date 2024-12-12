@@ -17,7 +17,6 @@ function LogsContextWrapper({ children }) {
       try {
         const logsData = await fetchSystemWideLogs(pageToFetch);
         setLogs(logsData.logs);
-        console.log("total logs", logsData.total);
         setTotalPages(logsData.totalPages);
         setTotalLogs(logsData.total);
         setError(null);

@@ -16,6 +16,7 @@ const Sidebar = ({
   user,
   setMobileMenuOpen,
 }) => {
+  const isAdmin = user && user.role === "admin";
   return (
     <aside
       className={`fixed top-0 left-0 w-[240px] h-full bg-indigo-50 transform ${
@@ -56,14 +57,12 @@ const Sidebar = ({
           </span>
         </Link>
         <Link
-          to={user.role === "admin" ? "/admin/users" : "#"}
+          to={isAdmin ? "/admin/users" : "#"}
           onClick={() => setMobileMenuOpen(!setMobileMenuOpen)}
           className={`flex items-center text-gray-600 ${
-            user.role === "admin"
-              ? "hover:text-indigo-800"
-              : "cursor-not-allowed opacity-50"
+            isAdmin ? "hover:text-indigo-800" : "cursor-not-allowed opacity-50"
           } py-4 transition-all duration-300 ${
-            user.role === "admin" ? "hover:translate-x-1" : ""
+            isAdmin ? "hover:translate-x-1" : ""
           }`}
         >
           <span className="material-icons-outlined mr-2">

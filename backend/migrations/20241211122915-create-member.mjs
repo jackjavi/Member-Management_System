@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Users", // Assuming Users table exists
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",

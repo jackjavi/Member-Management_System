@@ -63,7 +63,7 @@ async function seedUsers() {
     );
 
     // Bulk create users and fetch them
-    await User.sync({ force: true });
+    await User.sync({});
     const createdUsers = await User.bulkCreate(users, { returning: true });
 
     // Log the registration activity for each user

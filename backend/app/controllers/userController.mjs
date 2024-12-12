@@ -1,4 +1,4 @@
-import { Member, User, Role, UserActivity } from "../models/index.mjs";
+import { Member, User, Role } from "../models/index.mjs";
 import logUserActivity from "../../utils/logUserActivity.mjs";
 import config from "../../config/config.mjs";
 import { Op, fn, col } from "sequelize";

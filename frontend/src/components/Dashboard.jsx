@@ -13,13 +13,14 @@ import { TbLogs } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-  const { totalLogs } = useContext(LogsContext);
+  const { totalLogs, retrieveLogs } = useContext(LogsContext);
   const { disconnect, user } = useContext(AuthContext);
   const { totalUsers, roleDistribution, fetchUsers } = useContext(UsersContext);
 
   useEffect(() => {
     fetchUsers();
-  }, [fetchUsers]);
+    retrieveLogs();
+  }, [fetchUsers, retrieveLogs]);
 
   return (
     <div className="bg-indigo-50 min-h-screen overflow-x-hidden  md:pt-16 pt-8">
