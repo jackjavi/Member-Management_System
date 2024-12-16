@@ -5,12 +5,16 @@ import appRoutes from "./app/app.mjs";
 import config from "./config/config.mjs";
 import path from "path";
 import { fileURLToPath } from "url";
+import http from "http";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = config.PORT;
+
+// create a http server
+const server = http.createServer(app);
 
 // Serve the uploads directory
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -31,3 +35,6 @@ sequelize
   .catch((err) => {
     console.error("Database connection failed:", err);
   });
+
+// export the server for testing
+export { server };
