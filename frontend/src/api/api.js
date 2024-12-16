@@ -4,10 +4,11 @@ import axios from "axios";
  * Fetches system-wide logs from the backend.
  * @returns {Promise<Object[]>} An array of logs containing User and ActivityLog details.
  */
-export const fetchSystemWideLogs = async (page) => {
+export const fetchSystemWideLogs = async (page, filters) => {
   try {
+    const query = new URLSearchParams({ ...filters, page }).toString();
     const response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/api/v1/system-logs?page=${page}&limit=5`,
+      `${process.env.REACT_APP_BACKEND_URL}/api/v1/system-logs?${query}`,
       {
         headers: {
           "Content-Type": "multipart/form-data",

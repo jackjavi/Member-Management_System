@@ -1,4 +1,5 @@
 import { ActivityLog, UserActivity, User, Role } from "../models/index.mjs";
+import { Op } from "sequelize";
 
 // Create a new activity
 async function createActivity(req, res) {
@@ -130,6 +131,53 @@ async function viewSystemWideLogs(req, res) {
     const limit = parseInt(req.query.limit, 10) || 10;
     const offset = (page - 1) * limit;
 
+    const {
+      role,
+      name,
+      email,
+      action,
+      sortBy = "timestamp",
+      sortOrder = "ASC",
+    } = req.query;
+
+    const whereClause = {};
+    const userIncludeFilters = {};
+    let orderClause = [[sortBy, sortOrder.toUpperCase()]];
+
+    if (role) {
+      userIncludeFilters["$role.name$"] = role;
+    }
+    if (name) {
+      userIncludeFilters.name = { [Op.like]: `%${name}%` };
+    }
+    if (email) {
+      userIncludeFilters.email = { [Op.like]: `%${email}%` };
+    }
+    if (action) {
+      whereClause["$ActivityLog.action$"] = { [Op.like]: `%${action}%` };
+    }
+
+    if (sortBy === "name") {
+      orderClause = [
+        [{ model: User, as: "User" }, "name", sortOrder.toUpperCase()],
+      ];
+    } else if (sortBy === "email") {
+      orderClause = [
+        [{ model: User, as: "User" }, "email", sortOrder.toUpperCase()],
+      ];
+    } else if (sortBy === "action") {
+      orderClause = [
+        [
+          { model: ActivityLog, as: "ActivityLog" },
+          "action",
+          sortOrder.toUpperCase(),
+        ],
+      ];
+    } else {
+      orderClause = [[sortBy, sortOrder.toUpperCase()]];
+    }
+
+    // Check if the current user is an admin
     const user = await User.findByPk(userId, {
       include: {
         model: Role,
@@ -144,17 +192,24 @@ async function viewSystemWideLogs(req, res) {
 
     const userRole = user.role.name;
 
-    const whereClause = userRole === "admin" ? {} : { userId };
+    // Non-admin users can only view their logs
+    if (userRole !== "admin") {
+      whereClause.userId = userId;
+    }
 
+    // Fetch logs with filtering, sorting, and pagination
     const { count, rows: logs } = await UserActivity.findAndCountAll({
       where: whereClause,
       include: [
         {
           model: ActivityLog,
+          as: "ActivityLog",
           attributes: ["action", "description"],
         },
         {
           model: User,
+          as: "User",
+          where: userIncludeFilters,
           attributes: ["id", "name", "email"],
           include: {
             model: Role,
@@ -163,9 +218,10 @@ async function viewSystemWideLogs(req, res) {
           },
         },
       ],
-      attributes: ["timestamp"],
+      attributes: ["id", "timestamp"],
       limit,
       offset,
+      order: orderClause,
     });
 
     res.status(200).json({

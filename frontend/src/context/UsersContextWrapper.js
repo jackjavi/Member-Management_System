@@ -61,7 +61,12 @@ function UsersContextWrapper({ children }) {
   }
 
   async function handleEditRole(userId) {
-    const newRole = prompt("Enter new role (admin/user):").trim().toLowerCase();
+    const newRoleInput = prompt("Enter new role (admin/user):");
+    let newRole = null;
+    if (newRoleInput !== null) {
+      newRole = newRoleInput.trim().toLowerCase();
+    }
+
     if (!["admin", "user"].includes(newRole)) {
       alert("Invalid role. Please enter 'admin' or 'user'.");
       return;

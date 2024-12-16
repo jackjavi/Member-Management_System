@@ -10,12 +10,19 @@ function LogsContextWrapper({ children }) {
   const [totalLogs, setTotalLogs] = useState(0);
   const [isLoadingLogs, setIsLoadingLogs] = useState(true);
   const [error, setError] = useState(null);
+  const [filters, setFilters] = useState({
+    name: "",
+    email: "",
+    role: "",
+    action: "",
+    limit: 5,
+  });
 
   const retrieveLogs = useCallback(
     async (pageToFetch = page) => {
       setIsLoadingLogs(true);
       try {
-        const logsData = await fetchSystemWideLogs(pageToFetch);
+        const logsData = await fetchSystemWideLogs(pageToFetch, filters);
         setLogs(logsData.logs);
         setTotalPages(logsData.totalPages);
         setTotalLogs(logsData.total);
@@ -27,7 +34,7 @@ function LogsContextWrapper({ children }) {
         setIsLoadingLogs(false);
       }
     },
-    [page]
+    [page, filters]
   );
 
   useEffect(() => {
@@ -67,6 +74,7 @@ function LogsContextWrapper({ children }) {
     handlePrevPage,
     page,
     totalPages,
+    setFilters,
     currentPageMessage,
     totalPagesMessage,
     totalLogsMessage,
