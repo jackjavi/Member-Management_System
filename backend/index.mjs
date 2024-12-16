@@ -24,7 +24,7 @@ appRoutes(app);
 
 // Sync Database and Start Server
 sequelize
-  .sync({ force: true })
+  .sync()
   .then(async () => {
     await populateDatabase();
     console.log("Database synced successfully.");
