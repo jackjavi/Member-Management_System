@@ -1,11 +1,5 @@
 import bcrypt from "bcrypt";
-import {
-  Role,
-  User,
-  ActivityLog,
-  UserActivity,
-  Member,
-} from "../app/models/index.mjs";
+import { Role, User, ActivityLog, Member } from "../app/models/index.mjs";
 import logUserActivity from "../utils/logUserActivity.mjs";
 import { faker } from "@faker-js/faker";
 
@@ -50,12 +44,10 @@ async function seedUsers() {
     // Generate passwords and their hashes
     const passwords = Array(NUM_USERS)
       .fill()
-      .map(() => faker.internet.password());
+      .map(() => "password");
     const hashedPasswords = await Promise.all(
       passwords.map((password) => bcrypt.hash(password, 10))
     );
-
-    console.log("Passwords", passwords);
 
     // Generate random users
     const users = hashedPasswords.map((hashedPassword, index) =>

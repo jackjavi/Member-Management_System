@@ -16,7 +16,7 @@ async function logUserActivity(userId, action) {
 
     console.log(`Logged activity: ${action} for userId: ${userId}`);
   } catch (error) {
-    console.error("Error logging user activity:", error);
+    console.error("Error logging user activity:", error.message);
   }
 }
 
